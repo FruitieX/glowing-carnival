@@ -17,6 +17,8 @@ function preload() {
   game.load.image('bg0', 'assets/Background/bg_layer1.png');
   game.load.image('bg1', 'assets/Background/bg_layer4.png');
 
+  game.load.image('lava', 'assets/Tiles/tile_15.png');
+
   game.load.image('ground1_tb', 'assets/Tiles/tile_111.png');
   game.load.image('ground1_trb', 'assets/Tiles/tile_114.png');
   game.load.image('ground1_lrb', 'assets/Tiles/tile_115.png');
