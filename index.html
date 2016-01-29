@@ -44,6 +44,13 @@ function loadLevel(level) {
 
   platforms.enableBody = true;
   
+  lava = game.add.group();
+  
+  lava.enableBody = true;
+  
+  var temp = lava.create(50, 50, 'ground1_l');
+  temp.body.immovable = true;
+  
   
   var scale = 32;
 
@@ -86,7 +93,13 @@ function create() {
    * Player
    */
 
-  // The player and its settings
+  spawnPlayer();
+
+  cursors = game.input.keyboard.createCursorKeys();
+  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+}
+
+function spawnPlayer() {
   player = game.add.sprite(32, game.world.height - 150, 'player');
   player.scale.setTo(0.25, 0.25);
 
@@ -103,10 +116,7 @@ function create() {
   player.animations.add('right', [0, 1], 10, true);
   player.animations.add('jump', [4], 10, true);
   player.animations.add('stand', [5], 10, true);
-
-  cursors = game.input.keyboard.createCursorKeys();
-  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
+  
   game.camera.follow(player);
 }
 
@@ -116,8 +126,17 @@ var jumpSpeed = 500;
 
 var stillDelta = 1; // 1 is pretty slow
 
+function touchlava() {
+    player.kill();
+    spawnPlayer();
+}
+
 function update() {
   game.physics.arcade.collide(player, platforms);
+  
+  game.physics.arcade.collide(player, lava, touchlava, null, this);
+  
+  if(player.body.touching)
 
   //  Reset the players velocity (movement)
   player.body.acceleration.x = 0;
