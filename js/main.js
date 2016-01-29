@@ -1,10 +1,10 @@
 // "constants"
-var gravity = 800;
 var accel = 2000;
+var gravity = 800;
 var maxSpeed = 400;
+var runSpeed = 800;
 var jumpSpeed = 500;
 
-// animation code considers speeds slower than this to be = still
 var stillDelta = 1; // 1 is pretty slow
 
 var game = new Phaser.Game(1024, 600, Phaser.AUTO, '', {
@@ -61,6 +61,7 @@ function create() {
 
   cursors = game.input.keyboard.createCursorKeys();
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 }
 
 function spawnPlayer() {
@@ -72,6 +73,7 @@ function spawnPlayer() {
 
   //  Player physics properties. Give the little guy a slight bounce.
   //player.body.bounce.y = 0.2;
+  player.body.maxVelocity.x = maxSpeed;
   player.body.gravity.y = gravity;
   player.body.collideWorldBounds = true;
 
@@ -93,6 +95,12 @@ function update() {
   game.physics.arcade.collide(player, platforms);
 
   game.physics.arcade.collide(player, lava, touchlava, null, this);
+  
+  if(runButton.isDown) {
+    player.body.maxVelocity.x = runSpeed;  
+  } else {
+    player.body.maxVelocity.x = maxSpeed;
+  }
 
   if(player.body.touching)
 
@@ -146,12 +154,12 @@ function update() {
   }
 
   // clamp x speeds to maximum values
-  if (player.body.velocity.x > maxSpeed) {
-    player.body.velocity.x = maxSpeed;
-  } else if (player.body.velocity.x < -maxSpeed) {
-    player.body.velocity.x = -maxSpeed;
-  }
-
+  //if (player.body.velocity.x > maxSpeed) {
+    //player.body.velocity.x = maxSpeed;
+  //} else if (player.body.velocity.x < -maxSpeed) {
+    //player.body.velocity.x = -maxSpeed;
+  //}
+     
   // animations
   if (player.body.touching.down) {
     if (player.body.velocity.x > stillDelta) {
