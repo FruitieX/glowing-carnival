@@ -1,3 +1,12 @@
+// "constants"
+var accel = 2000;
+var gravity = 800;
+var maxSpeed = 400;
+var runSpeed = 800;
+var jumpSpeed = 500;
+
+var stillDelta = 1; // 1 is pretty slow
+
 var game = new Phaser.Game(1024, 600, Phaser.AUTO, '', {
   preload: preload,
   create: create,
@@ -32,7 +41,6 @@ var playerSpawn = {
   y: 0
 };
 
-var gravity = 800;
 function create() {
   // Add the background
   game.add.sprite(0, 0, 'bg0');
@@ -82,13 +90,6 @@ function touchlava() {
     player.kill();
     spawnPlayer();
 }
-
-var accel = 2000;
-var maxSpeed = 400;
-var runSpeed = 800;
-var jumpSpeed = 500;
-
-var stillDelta = 1; // 1 is pretty slow
 
 function update() {
   game.physics.arcade.collide(player, platforms);
