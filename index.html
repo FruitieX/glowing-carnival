@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Phaser - Making your first game, part 2</title>
+    <title>GGJ2016</title>
     <script type="text/javascript" src="js/phaser.js"></script>
     <style type="text/css">
         body {
@@ -12,6 +12,7 @@
 </head>
 <body>
 
+  <script type="text/javascript" src="levels/level1.js"></script>
 <script type="text/javascript">
 
 var game = new Phaser.Game(1024, 600, Phaser.AUTO, '', {
@@ -38,42 +39,48 @@ function preload() {
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
 }
 
+function loadLevel(level) {
+  platforms = game.add.group();
+
+  platforms.enableBody = true;
+  
+  
+  var scale = 32;
+
+  // Indexing variables
+  var x = 0;
+  var y = 0;
+  for (var i = 0; i < level.map.length; i++) {
+    var cur = level.map.charAt(i); // Current character
+    if (cur == "\n") {
+      x = 0;
+      y++;
+    } else {
+      console.log("x="+x+"y="+y);
+      if (cur == "#") {
+        var tile = platforms.create(x * scale, y * scale, 'ground1_t');
+        tile.scale.setTo(scale/64, scale/64);
+        tile.body.immovable = true;
+      }
+      x++;
+    }
+  }
+
+  game.world.setBounds(0, 0, x * scale, (y+1) * scale);
+}
+
 var gravity = 800;
 function create() {
   // Add the background
   game.add.sprite(0, 0, 'bg0');
   game.add.sprite(0, 0, 'bg1');
 
-  game.world.setBounds(0, 0, 1920, 1920);
+  //game.world.setBounds(0, 0, 1920, 1920);
 
   //  We're going to be using physics, so enable the Arcade Physics system
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
-  //  The platforms group contains the ground and the 2 ledges we can jump on
-  platforms = game.add.group();
-
-  //  We will enable physics for any object that is created in this group
-  platforms.enableBody = true;
-
-  // Here we create the ground.
-  var ground = platforms.create(0, game.world.height - 64, 'ground1_t');
-
-  //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-  ground.scale.setTo(20, 1);
-
-  //  This stops it from falling away when you jump on it
-  ground.body.immovable = true;
-
-  //  Now let's create two ledges
-  var ledge = platforms.create(400, 400, 'ground1_t');
-  ledge.scale.setTo(20, 0.5);
-
-  ledge.body.immovable = true;
-
-  var ledge2 = platforms.create(-150, 250, 'ground1_t');
-  ledge2.scale.setTo(8, 0.5);
-
-  ledge2.body.immovable = true;
+  loadLevel(level1);
 
   /*
    * Player
