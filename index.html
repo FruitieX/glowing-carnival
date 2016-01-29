@@ -14,20 +14,157 @@
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
+var game = new Phaser.Game(1024, 600, Phaser.AUTO, '', {
   preload: preload,
   create: create,
   update: update
 });
 
+var player;
+
 function preload() {
-  game.load.image('sky', 'assets/sky.png');
+  game.load.image('bg0', 'assets/Background/bg_layer1.png');
+  game.load.image('bg1', 'assets/Background/bg_layer4.png');
+
+  game.load.image('ground1_l', 'assets/Tiles/tile_167.png');
+  game.load.image('ground1_l', 'assets/Tiles/tile_168.png');
+  game.load.image('ground1_t', 'assets/Tiles/tile_194.png');
+  game.load.image('ground1_b', 'assets/Tiles/tile_195.png');
+  game.load.image('ground1_bl', 'assets/Tiles/tile_143.png');
+  game.load.image('ground1_br', 'assets/Tiles/tile_144.png');
+  game.load.image('ground1_tl', 'assets/Tiles/tile_116.png');
+  game.load.image('ground1_tr', 'assets/Tiles/tile_117.png');
+
+  game.load.image('player', 'assets/Players/bunny1_walk1.png');
 }
 
+var gravity = 800;
 function create() {
+  // Add the background
+  game.add.sprite(0, 0, 'bg0');
+  game.add.sprite(0, 0, 'bg1');
+
+  //  We're going to be using physics, so enable the Arcade Physics system
+  game.physics.startSystem(Phaser.Physics.ARCADE);
+
+  //  The platforms group contains the ground and the 2 ledges we can jump on
+  platforms = game.add.group();
+
+  //  We will enable physics for any object that is created in this group
+  platforms.enableBody = true;
+
+  // Here we create the ground.
+  var ground = platforms.create(0, game.world.height - 64, 'ground1_t');
+
+  //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+  ground.scale.setTo(20, 1);
+
+  //  This stops it from falling away when you jump on it
+  ground.body.immovable = true;
+
+  //  Now let's create two ledges
+  var ledge = platforms.create(400, 400, 'ground1_t');
+  ledge.scale.setTo(20, 0.5);
+
+  ledge.body.immovable = true;
+
+  var ledge2 = platforms.create(-150, 250, 'ground1_t');
+  ledge2.scale.setTo(8, 0.5);
+
+  ledge2.body.immovable = true;
+
+  /*
+   * Player
+   */
+
+  // The player and its settings
+  player = game.add.sprite(32, game.world.height - 150, 'player');
+  player.scale.setTo(0.25, 0.25);
+
+  //  We need to enable physics on the player
+  game.physics.arcade.enable(player);
+
+  //  Player physics properties. Give the little guy a slight bounce.
+  //player.body.bounce.y = 0.2;
+  player.body.gravity.y = gravity;
+  player.body.collideWorldBounds = true;
+
+  //  Our two animations, walking left and right.
+  //player.animations.add('left', [0, 1, 2, 3], 10, true);
+  //player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+  cursors = game.input.keyboard.createCursorKeys();
 }
+
+var accel = 2000;
+var maxSpeed = 400;
+var jumpSpeed = 500;
 
 function update() {
+  game.physics.arcade.collide(player, platforms);
+
+  //  Reset the players velocity (movement)
+  player.body.acceleration.x = 0;
+
+  if (cursors.left.isDown) {
+    //  Move to the left
+    player.body.acceleration.x = -accel;
+
+    // turn instantly if we're on the ground
+    if (player.body.touching.down) {
+      if (player.body.velocity.x > 0) {
+        player.body.velocity.x = 0;
+      }
+    }
+
+    //player.animations.play('left');
+  } else if (cursors.right.isDown) {
+    //  Move to the right
+    player.body.acceleration.x = accel;
+
+    // turn instantly if we're on the ground
+    if (player.body.touching.down) {
+      if (player.body.velocity.x < 0) {
+        player.body.velocity.x = 0;
+      }
+    }
+
+    //player.animations.play('right');
+  } else {
+    if (player.body.touching.down) {
+      player.body.velocity.x = 0;
+    }
+    //  Stand still
+    //player.animations.stop();
+
+    //player.frame = 4;
+  }
+
+  //  Allow the player to jump if they are touching the ground.
+  if (cursors.up.isDown && player.body.touching.down) {
+    player.body.velocity.y = -jumpSpeed;
+  }
+
+  // walljumps TODO: only works if holding left/right :(
+  else if (cursors.up.isDown && player.body.touching.left) {
+    player.body.velocity.y = -jumpSpeed;
+    player.body.velocity.x = maxSpeed;
+  } else if (cursors.up.isDown && player.body.touching.right) {
+    player.body.velocity.y = -jumpSpeed;
+    player.body.velocity.x = -maxSpeed;
+  }
+
+  // clamp x speeds to maximum values
+  if (player.body.velocity.x > maxSpeed) {
+    player.body.velocity.x = maxSpeed;
+  } else if (player.body.velocity.x < -maxSpeed) {
+    player.body.velocity.x = -maxSpeed;
+  }
+}
+
+function render() {
+  //game.debug.cameraInfo(game.camera, 32, 32);
+  //game.debug.spriteCoords(player, 32, 500);
 }
 
 </script>
