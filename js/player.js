@@ -61,6 +61,9 @@ function playerMovement() {
       player.body.position.x > game.world.bounds.width ||
       player.body.position.y > game.world.bounds.height) {
     console.log('YOU\'RE WINNER!');
+    game.world.removeAll();
+    loadLevel(level2);
+
     spawnPlayer();
   }
 }
