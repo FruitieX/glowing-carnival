@@ -1,4 +1,8 @@
 function playerMovement() {
+  // set acceleration to 0.
+  // below code will set it to something else if we still want to move
+  player.body.acceleration.x = 0;
+
   if(runButton.isDown) {
     player.body.maxVelocity.x = runSpeed;  
   } else {
@@ -49,6 +53,15 @@ function playerMovement() {
   } else if (jump && player.body.touching.right) {
     player.body.velocity.y = -jumpSpeed;
     player.body.velocity.x = -maxSpeed;
+  }
+
+  // out of bounds check for player, acts as win condition
+  if (player.body.position.x + player.body.width  < game.world.bounds.x ||
+      player.body.position.y + player.body.height < game.world.bounds.y ||
+      player.body.position.x > game.world.bounds.width ||
+      player.body.position.y > game.world.bounds.height) {
+    console.log('YOU\'RE WINNER!');
+    spawnPlayer();
   }
 }
 
