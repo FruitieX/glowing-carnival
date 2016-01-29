@@ -7,7 +7,7 @@ var jumpSpeed = 500;
 
 var stillDelta = 1; // 1 is pretty slow
 
-var game = new Phaser.Game(1024, 600, Phaser.AUTO, '', {
+var game = new Phaser.Game('100', '100', Phaser.AUTO, '', {
   preload: preload,
   create: create,
   update: update
@@ -53,6 +53,7 @@ function create() {
 
   loadLevel(level1);
 
+  game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
   /*
    * Player
    */
