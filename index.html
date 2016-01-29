@@ -44,6 +44,8 @@ function create() {
   game.add.sprite(0, 0, 'bg0');
   game.add.sprite(0, 0, 'bg1');
 
+  game.world.setBounds(0, 0, 1920, 1920);
+
   //  We're going to be using physics, so enable the Arcade Physics system
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -94,6 +96,8 @@ function create() {
   //player.animations.add('right', [5, 6, 7, 8], 10, true);
 
   cursors = game.input.keyboard.createCursorKeys();
+
+  game.camera.follow(player);
 }
 
 var accel = 2000;
@@ -163,8 +167,10 @@ function update() {
 }
 
 function render() {
-  //game.debug.cameraInfo(game.camera, 32, 32);
-  //game.debug.spriteCoords(player, 32, 500);
+  /*
+  game.debug.cameraInfo(game.camera, 32, 32);
+  game.debug.spriteCoords(player, 32, 500);
+  */
 }
 
 </script>
