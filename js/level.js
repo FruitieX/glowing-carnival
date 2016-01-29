@@ -42,16 +42,28 @@ function loadLevel(level) {
         var down = false;
 
         // Vertical checks
-        if (x == 0) left = true;
-        else if (x == mapArray[y].length-1) right = true;
+        if (x == 0) {
+          left = true;
+          if (mapArray[y][x+1] == "#") right = true;
+        }
+        else if (x == mapArray[y].length-1) {
+          right = true;
+          if (mapArray[y][x-1] == "#") left = true;
+        }
         else {
           if (mapArray[y][x-1] == "#") left = true;
           if (mapArray[y][x+1] == "#") right = true;
         }
 
         // Horizontal checks
-        if (y == 0) up = true;
-        else if (y == mapArray.length-1) down = true;
+        if (y == 0) {
+          up = true;
+          if (mapArray[y+1][x] == "#") down = true;
+        }
+        else if (y == mapArray.length-1) {
+          down = true;
+          if (mapArray[y-1][x] == "#") up = true;
+        }
         else {
           if (mapArray[y-1][x] == "#") up = true;
           if (mapArray[y+1][x] == "#") down = true;
