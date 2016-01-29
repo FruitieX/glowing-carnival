@@ -1,10 +1,10 @@
 // "constants"
-var gravity = 800;
 var accel = 2000;
+var gravity = 800;
 var maxSpeed = 400;
+var runSpeed = 800;
 var jumpSpeed = 500;
 
-// animation code considers speeds slower than this to be = still
 var stillDelta = 1; // 1 is pretty slow
 
 var game = new Phaser.Game(1024, 600, Phaser.AUTO, '', {
@@ -57,6 +57,7 @@ function create() {
 
   cursors = game.input.keyboard.createCursorKeys();
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 }
 
 function touchlava() {

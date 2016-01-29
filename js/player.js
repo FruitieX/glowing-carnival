@@ -1,4 +1,10 @@
 function playerMovement() {
+  if(runButton.isDown) {
+    player.body.maxVelocity.x = runSpeed;  
+  } else {
+    player.body.maxVelocity.x = maxSpeed;
+  }
+
   if (cursors.left.isDown) {
     //  Move to the left
     player.body.acceleration.x = -accel;
@@ -44,13 +50,6 @@ function playerMovement() {
     player.body.velocity.y = -jumpSpeed;
     player.body.velocity.x = -maxSpeed;
   }
-
-  // clamp x speeds to maximum values
-  if (player.body.velocity.x > maxSpeed) {
-    player.body.velocity.x = maxSpeed;
-  } else if (player.body.velocity.x < -maxSpeed) {
-    player.body.velocity.x = -maxSpeed;
-  }
 }
 
 function spawnPlayer() {
@@ -62,6 +61,7 @@ function spawnPlayer() {
 
   //  Player physics properties. Give the little guy a slight bounce.
   //player.body.bounce.y = 0.2;
+  player.body.maxVelocity.x = maxSpeed;
   player.body.gravity.y = gravity;
 
   // We allow out of bounds as that is our current win condition
