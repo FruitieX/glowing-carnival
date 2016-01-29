@@ -1,4 +1,8 @@
 function loadLevel(level) {
+  // Add the background
+  game.add.sprite(0, 0, 'bg0');
+  game.add.sprite(0, 0, 'bg1');
+
   platforms = game.add.group();
 
   platforms.enableBody = true;

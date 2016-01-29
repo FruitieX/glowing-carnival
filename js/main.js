@@ -24,7 +24,7 @@ function preload() {
   game.load.image('ground1_tr', 'assets/Tiles/tile_117.png');
   game.load.image('ground1_lr', 'assets/Tiles/tile_138.png');
   game.load.image('ground1_ltr', 'assets/Tiles/tile_141.png');
-  game.load.image('ground1_lrb', 'assets/Tiles/tile_142.png');
+  game.load.image('ground1_ltb', 'assets/Tiles/tile_142.png');
   game.load.image('ground1_lb', 'assets/Tiles/tile_143.png');
   game.load.image('ground1_rb', 'assets/Tiles/tile_144.png');
   game.load.image('ground1_l', 'assets/Tiles/tile_167.png');
@@ -42,10 +42,6 @@ var playerSpawn = {
 };
 
 function create() {
-  // Add the background
-  game.add.sprite(0, 0, 'bg0');
-  game.add.sprite(0, 0, 'bg1');
-
   //game.world.setBounds(0, 0, 1920, 1920);
 
   //  We're going to be using physics, so enable the Arcade Physics system
