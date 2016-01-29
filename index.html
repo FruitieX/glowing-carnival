@@ -46,6 +46,11 @@ function preload() {
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
 }
 
+var playerSpawn = {
+  x: 0,
+  y: 0
+};
+
 function loadLevel(level) {
   platforms = game.add.group();
 
@@ -121,11 +126,14 @@ function loadLevel(level) {
         tile.body.checkCollision.down = !down;
         tile.body.checkCollision.left = !left;
         tile.body.checkCollision.right = !right;
+      } else if (mapArray[y][x] == "*") {
+        playerSpawn = {
+          x: x * scale,
+          y: y * scale
+        }
       }
     }
   }
-
-
 
   game.world.setBounds(0, 0, x * scale, (y+1) * scale);
 }
@@ -154,7 +162,7 @@ function create() {
 }
 
 function spawnPlayer() {
-  player = game.add.sprite(32, game.world.height - 150, 'player');
+  player = game.add.sprite(playerSpawn.x, playerSpawn.y, 'player');
   player.scale.setTo(0.25, 0.25);
 
   //  We need to enable physics on the player
