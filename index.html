@@ -27,15 +27,22 @@ function preload() {
   game.load.image('bg0', 'assets/Background/bg_layer1.png');
   game.load.image('bg1', 'assets/Background/bg_layer4.png');
 
+  game.load.image('ground1_tb', 'assets/Tiles/tile_111.png');
+  game.load.image('ground1_trb', 'assets/Tiles/tile_114.png');
+  game.load.image('ground1_lrb', 'assets/Tiles/tile_115.png');
+  game.load.image('ground1_lt', 'assets/Tiles/tile_116.png');
+  game.load.image('ground1_tr', 'assets/Tiles/tile_117.png');
+  game.load.image('ground1_lr', 'assets/Tiles/tile_138.png');
+  game.load.image('ground1_ltr', 'assets/Tiles/tile_141.png');
+  game.load.image('ground1_lrb', 'assets/Tiles/tile_142.png');
+  game.load.image('ground1_lb', 'assets/Tiles/tile_143.png');
+  game.load.image('ground1_rb', 'assets/Tiles/tile_144.png');
   game.load.image('ground1_l', 'assets/Tiles/tile_167.png');
-  game.load.image('ground1_l', 'assets/Tiles/tile_168.png');
+  game.load.image('ground1_r', 'assets/Tiles/tile_168.png');
+  game.load.image('ground1_', 'assets/Tiles/tile_169.png');
   game.load.image('ground1_t', 'assets/Tiles/tile_194.png');
   game.load.image('ground1_b', 'assets/Tiles/tile_195.png');
-  game.load.image('ground1_bl', 'assets/Tiles/tile_143.png');
-  game.load.image('ground1_br', 'assets/Tiles/tile_144.png');
-  game.load.image('ground1_tl', 'assets/Tiles/tile_116.png');
-  game.load.image('ground1_tr', 'assets/Tiles/tile_117.png');
-
+ 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
 }
 
@@ -50,21 +57,70 @@ function loadLevel(level) {
   // Indexing variables
   var x = 0;
   var y = 0;
+
+  var mapArray = [];
+  var rowArray = [];
+
+  // Parsing the string into a two-dimensional array
   for (var i = 0; i < level.map.length; i++) {
     var cur = level.map.charAt(i); // Current character
     if (cur == "\n") {
-      x = 0;
-      y++;
+      mapArray.push(rowArray);
+      rowArray = [];
     } else {
-      console.log("x="+x+"y="+y);
-      if (cur == "#") {
-        var tile = platforms.create(x * scale, y * scale, 'ground1_t');
-        tile.scale.setTo(scale/64, scale/64);
-        tile.body.immovable = true;
-      }
-      x++;
+      rowArray.push(cur);
+
     }
   }
+
+  for (var y = 0; y < mapArray.length; y++) {
+    for (var x = 0; x < mapArray[y]; x++) {
+      if (mapArray[y][x] == "#") {
+        // Creating a tile! Determining whether it has any neighbors
+        var left = false;
+        var up = false;
+        var right = false;
+        var down = false;
+
+        // Vertical checks
+        if (x == 0) left = true;
+        else if (x == mapArray[y].length-1) right = true;
+        else {
+          if (mapArray[y][x-1] == "#") left = true;
+          if (mapArray[y][x+1] == "#") right = true;
+        }
+
+        // Horizontal checks
+        if (y == 0) up = true;
+        else if (y == mapArray.length-1) down = true;
+        else {
+          if (mapArray[y-1][x] == "#") up = true;
+          if (mapArray[y+1][x] == "#") down = true;
+        }
+
+
+        if (left && up && right && down) tileImage = 'ground1_bt';
+
+        tileImage = 'ground1_';
+        tileImage += !left ? 'l' : '';
+        tileImage += !up ? 't' : '';
+        tileImage += !right ? 'r' : '';
+        tileImage += !down ? 'b' : '';
+
+        var tile = platforms.create(x * scale, y * scale, tileImage);
+        tile.scale.setTo(scale/64, scale/64);
+        tile.body.immovable = true;
+
+        // Preventing impossible collisions
+        tile.body.checkCollision.up = !up;
+        tile.body.checkCollision.down = !down;
+        tile.body.checkCollision.left = !left;
+        tile.body.checkCollision.right = !right;
+      }
+    }
+  }
+
+
 
   game.world.setBounds(0, 0, x * scale, (y+1) * scale);
 }
