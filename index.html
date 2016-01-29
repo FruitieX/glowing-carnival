@@ -69,12 +69,12 @@ function loadLevel(level) {
       rowArray = [];
     } else {
       rowArray.push(cur);
-
     }
   }
+  mapArray.push(rowArray);
 
   for (var y = 0; y < mapArray.length; y++) {
-    for (var x = 0; x < mapArray[y]; x++) {
+    for (var x = 0; x < mapArray[y].length; x++) {
       if (mapArray[y][x] == "#") {
         // Creating a tile! Determining whether it has any neighbors
         var left = false;
@@ -98,8 +98,6 @@ function loadLevel(level) {
           if (mapArray[y+1][x] == "#") down = true;
         }
 
-
-        if (left && up && right && down) tileImage = 'ground1_bt';
 
         tileImage = 'ground1_';
         tileImage += !left ? 'l' : '';
