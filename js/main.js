@@ -8,17 +8,29 @@ function preload() {
   game.load.image('bg0', 'assets/Background/bg_layer1.png');
   game.load.image('bg1', 'assets/Background/bg_layer4.png');
 
-  game.load.image('ground1_tl', 'assets/Tiles/tile_116.png');
+  game.load.image('ground1_tb', 'assets/Tiles/tile_111.png');
+  game.load.image('ground1_trb', 'assets/Tiles/tile_114.png');
+  game.load.image('ground1_lrb', 'assets/Tiles/tile_115.png');
+  game.load.image('ground1_lt', 'assets/Tiles/tile_116.png');
   game.load.image('ground1_tr', 'assets/Tiles/tile_117.png');
-  game.load.image('ground1_bl', 'assets/Tiles/tile_143.png');
-  game.load.image('ground1_br', 'assets/Tiles/tile_144.png');
+  game.load.image('ground1_lr', 'assets/Tiles/tile_138.png');
+  game.load.image('ground1_ltr', 'assets/Tiles/tile_141.png');
+  game.load.image('ground1_lrb', 'assets/Tiles/tile_142.png');
+  game.load.image('ground1_lb', 'assets/Tiles/tile_143.png');
+  game.load.image('ground1_rb', 'assets/Tiles/tile_144.png');
   game.load.image('ground1_l', 'assets/Tiles/tile_167.png');
   game.load.image('ground1_r', 'assets/Tiles/tile_168.png');
+  game.load.image('ground1_', 'assets/Tiles/tile_169.png');
   game.load.image('ground1_t', 'assets/Tiles/tile_194.png');
   game.load.image('ground1_b', 'assets/Tiles/tile_195.png');
 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
 }
+
+var playerSpawn = {
+  x: 0,
+  y: 0
+};
 
 var gravity = 800;
 function create() {
@@ -37,8 +49,14 @@ function create() {
    * Player
    */
 
-  // The player and its settings
-  player = game.add.sprite(32, game.world.height - 150, 'player');
+  spawnPlayer();
+
+  cursors = game.input.keyboard.createCursorKeys();
+  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+}
+
+function spawnPlayer() {
+  player = game.add.sprite(playerSpawn.x, playerSpawn.y, 'player');
   player.scale.setTo(0.25, 0.25);
 
   //  We need to enable physics on the player
@@ -55,10 +73,12 @@ function create() {
   player.animations.add('jump', [4], 10, true);
   player.animations.add('stand', [5], 10, true);
 
-  cursors = game.input.keyboard.createCursorKeys();
-  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
   game.camera.follow(player);
+}
+
+function touchlava() {
+    player.kill();
+    spawnPlayer();
 }
 
 var accel = 2000;
@@ -69,6 +89,10 @@ var stillDelta = 1; // 1 is pretty slow
 
 function update() {
   game.physics.arcade.collide(player, platforms);
+
+  game.physics.arcade.collide(player, lava, touchlava, null, this);
+
+  if(player.body.touching)
 
   //  Reset the players velocity (movement)
   player.body.acceleration.x = 0;
@@ -141,8 +165,6 @@ function update() {
 }
 
 function render() {
-  /*
   game.debug.cameraInfo(game.camera, 32, 32);
   game.debug.spriteCoords(player, 32, 500);
-  */
 }
