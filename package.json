@@ -1,0 +1,23 @@
+{
+  "name": "glowing-carnival",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FruitieX/glowing-carnival.git"
+  },
+  "author": "",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/FruitieX/glowing-carnival/issues"
+  },
+  "homepage": "https://github.com/FruitieX/glowing-carnival#readme",
+  "dependencies": {
+    "node-static": "^0.7.7"
+  }
+}
