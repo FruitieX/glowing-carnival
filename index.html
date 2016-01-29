@@ -98,6 +98,7 @@ function create() {
   player.animations.add('stand', [5], 10, true);
 
   cursors = game.input.keyboard.createCursorKeys();
+  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
   game.camera.follow(player);
 }
@@ -145,15 +146,15 @@ function update() {
   }
 
   //  Allow the player to jump if they are touching the ground.
-  if (cursors.up.isDown && player.body.touching.down) {
+  if (jumpButton.isDown && player.body.touching.down) {
     player.body.velocity.y = -jumpSpeed;
   }
 
   // walljumps TODO: only works if holding left/right :(
-  else if (cursors.up.isDown && player.body.touching.left) {
+  else if (jumpButton.isDown && player.body.touching.left) {
     player.body.velocity.y = -jumpSpeed;
     player.body.velocity.x = maxSpeed;
-  } else if (cursors.up.isDown && player.body.touching.right) {
+  } else if (jumpButton.isDown && player.body.touching.right) {
     player.body.velocity.y = -jumpSpeed;
     player.body.velocity.x = -maxSpeed;
   }
