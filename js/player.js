@@ -89,7 +89,9 @@ function playerMovement() {
       console.log('YOU\'RE WINNER!');
       levelId = 0;
     }
+    saveTime(levelId - 1);
     loadLevel(levelId);
+    startTimer();
     spawnPlayer();
   }
 }
