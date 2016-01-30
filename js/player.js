@@ -49,10 +49,10 @@ function playerMovement() {
   // walljumps TODO: only works if holding left/right :(
   else if (jump && player.body.touching.left) {
     player.body.velocity.y = -jumpSpeed;
-    player.body.velocity.x = maxSpeed;
+    player.body.velocity.x = runButton.isDown ? runSpeed : maxSpeed;
   } else if (jump && player.body.touching.right) {
     player.body.velocity.y = -jumpSpeed;
-    player.body.velocity.x = -maxSpeed;
+    player.body.velocity.x = runButton.isDown ? -runSpeed : -maxSpeed;
   }
 
   // out of bounds check for player, acts as win condition
