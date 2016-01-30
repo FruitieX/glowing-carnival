@@ -1,4 +1,4 @@
-function loadLevel(level) {
+function loadLevel(levelId) {
   // Add the background
   game.add.sprite(0, 0, 'bg0');
   game.add.sprite(0, 0, 'bg1');
@@ -19,13 +19,13 @@ function loadLevel(level) {
   var rowArray = [];
 
   // Parsing the string into a two-dimensional array
-  for (var i = 0; i < level.map.length; i++) {
-    var cur = level.map.charAt(i); // Current character
+  for (var i = 0; i < levels[levelId].map.length; i++) {
+    var cur = levels[levelId].map.charAt(i); // Current character
     if (cur == "\n") {
       mapArray.push(rowArray);
       rowArray = [];
     } else {
-      rowArray.push(cur);
+      rowArray.push(cur);11
     }
   }
   mapArray.push(rowArray);

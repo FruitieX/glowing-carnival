@@ -61,11 +61,11 @@ function playerMovement() {
       player.body.position.x > game.world.bounds.width ||
       player.body.position.y > game.world.bounds.height) {
     game.world.removeAll();
-    if (++level == levels.length) {
+    if (++levelId == levels.length) {
       console.log('YOU\'RE WINNER!');
-      level = 0;
+      levelId = 0;
     }
-    loadLevel(levels[level]);
+    loadLevel(levelId);
     spawnPlayer();
   }
 }
