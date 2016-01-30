@@ -30,7 +30,7 @@ var curState = 'MainMenu';
 game.state.start('MainMenu');
 
 function preload() {
-  game.load.image('bg0', 'assets/Background/sky.png');
+  game.load.image('bg0', 'assets/Background/bg_layer1.png');
   game.load.image('bg1', 'assets/Background/bg_layer4.png');
 
   game.load.image('lava', 'assets/Obstacles/spikes_a.png');
@@ -55,6 +55,8 @@ function preload() {
   game.load.image('ground1_b', 'assets/Tiles/tile_195.png');
 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
+  game.load.tilemap('map', 'levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
+  game.load.image('tiles', 'assets/Tiles/tilemap.png');
 }
 
 var playerSpawn = {
@@ -62,15 +64,18 @@ var playerSpawn = {
   y: 0
 };
 
-var levelId = 0;
+var levelId = 1;
 
 var timer;
 
 function create() {
-  //game.world.setBounds(0, 0, 1920, 1920);
+  game.world.setBounds(0, 0, 1920, 1920);
 
   //  We're going to be using physics, so enable the Arcade Physics system
   game.physics.startSystem(Phaser.Physics.ARCADE);
+
+  // increase this if you get tunneling
+  game.physics.arcade.TILE_BIAS = 400;
 
   loadLevel(levelId);
 
@@ -126,21 +131,26 @@ function touchGravity(player, gravityBox) {
 }
 
 function retardateGrabbables() {
+  /*
     for (var i = 0; i < grabbables.children.length; ++i) {
         var speed = grabbables.children[i].body.velocity.x
         grabbables.children[i].body.acceleration.x = -(speed && speed / Math.abs(speed)) * 500;
     }
+    */
 }
 
 function update() {
-  game.physics.arcade.collide(player, platforms);
+  game.physics.arcade.collide(player, groundLayer);
+  //game.physics.arcade.collide(player, platforms);
 
+  /*
   game.physics.arcade.collide(player, lava, touchlava, null, this);
   game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
   game.physics.arcade.collide(grabbables, platforms);
   game.physics.arcade.collide(grabbables, gravities);
   game.physics.arcade.collide(player, gravities, touchGravity, null, this);
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
+  */
 
   // run player input & movement code
   playerMovement();
@@ -155,7 +165,10 @@ function update() {
 function render() {
   //game.debug.cameraInfo(game.camera, 32, 32);
   //game.debug.spriteCoords(player, 32, 500);
-  renderTimer();
+  //renderTimer();
   //game.debug.bodyInfo(player, 32, 40);
   //game.debug.body(player);
+  //game.debug.bodyInfo(player, 32, 32);
+  //game.debug.body(player);
+  //game.debug.body(groundLayer);
 }

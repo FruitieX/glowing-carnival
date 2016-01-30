@@ -1,3 +1,5 @@
+var scale = 32;
+
 function loadLevel(levelId) {
   game.world.removeAll();
 
@@ -5,6 +7,29 @@ function loadLevel(levelId) {
   background = game.add.sprite(0, 0, 'bg0');
   //game.add.sprite(0, 0, 'bg1');
 
+  map = game.add.tilemap('map');
+
+  // what we call the tileset in Tiled vs in preload()
+  map.addTilesetImage('tileset', 'tiles');
+
+  // layer name in Tiled
+  groundLayer = map.createLayer('ground');
+
+  groundLayer.resizeWorld();
+
+  map.setCollisionBetween(0, 523);
+
+  var spawn = game.add.group();
+  map.createFromObjects('spawn', 'spawn', '', 0, false, false, spawn);
+
+  spawn.forEach(function(spawnPoint) {
+    playerSpawn = {
+      x: spawnPoint.x,
+      y: spawnPoint.y
+    }
+  });
+
+  /*
   platforms = game.add.group();
   platforms.enableBody = true;
 
@@ -18,9 +43,8 @@ function loadLevel(levelId) {
   grabbables.enableBody = true;
 
   gravities = game.add.group();
-  gravities.enableBody = true;
+  gravities.enableBody = true
   
-  var scale = 32;
 
   // Indexing variables
   var x = 0;
@@ -121,6 +145,7 @@ function loadLevel(levelId) {
       }
     }
   }
+ */
 
-  game.world.setBounds(0, 0, x * scale, y * scale);
+  //game.world.setBounds(0, 0, x * scale, y * scale);
 }
