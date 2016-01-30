@@ -2,6 +2,8 @@
 var accel = 2000;
 var runAccel = 3000;
 var gravity = 2000;
+var bouncyGravity = 1000;
+var bouncyThrowMultiplier = 1.5;
 var maxSpeed = 500;
 var runSpeed = 700;
 var jumpSpeed = 650;
@@ -33,6 +35,7 @@ function preload() {
 
   game.load.image('lava', 'assets/Tiles/tile_15.png');
   game.load.image('checkpoint', 'assets/Tiles/tile_214.png');
+  game.load.image('bouncy', 'assets/Tiles/tile_03.png');
 
   game.load.image('ground1_tb', 'assets/Tiles/tile_111.png');
   game.load.image('ground1_trb', 'assets/Tiles/tile_114.png');
@@ -98,9 +101,18 @@ function passCheckpoint(player, checkpoint) {
     }
 }
 
+function touchBouncy(pl, bouncy) {
+    if (runButton.isDown) {
+        console.log(player);
+        grab(bouncy);
+    }
+}
+
 function update() {
   game.physics.arcade.collide(player, platforms);
   game.physics.arcade.collide(player, lava, touchlava, null, this);
+  game.physics.arcade.collide(player, bouncyTiles, touchBouncy, null, this);
+  game.physics.arcade.collide(bouncyTiles, platforms);
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 
   // run player input & movement code
