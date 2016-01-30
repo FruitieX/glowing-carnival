@@ -102,9 +102,10 @@ function passCheckpoint(player, checkpoint) {
 }
 
 function touchBouncy(pl, bouncy) {
-    if (runButton.isDown) {
-        grab(bouncy);
-    }
+  var input = processInput();
+  if (input.run) {
+    grab(bouncy);
+  }
 }
 
 function update() {
