@@ -60,7 +60,6 @@ function playerMovement() {
       player.body.position.y + player.body.height < game.world.bounds.y ||
       player.body.position.x > game.world.bounds.width ||
       player.body.position.y > game.world.bounds.height) {
-    game.world.removeAll();
     if (++levelId == levels.length) {
       console.log('YOU\'RE WINNER!');
       levelId = 0;
