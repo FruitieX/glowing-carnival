@@ -73,8 +73,6 @@ function create() {
 
   loadLevel(levelId);
 
-  game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   jumpButton.onDown.add(jump, this);
 
@@ -106,9 +104,10 @@ function passCheckpoint(player, checkpoint) {
 }
 
 function touchBouncy(pl, bouncy) {
-    if (runButton.isDown) {
-        grab(bouncy);
-    }
+  var input = processInput();
+  if (input.run) {
+    grab(bouncy);
+  }
 }
 
 function update() {
