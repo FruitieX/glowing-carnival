@@ -1,4 +1,9 @@
 function menuPreload() {
+  caption = {
+    font: 'Liberation Mono',
+    fontSize: '64px',
+    fill: '#fff'
+  }; 
   normalText = {
     font: 'Liberation Mono',
     fontSize: '52px',
@@ -6,20 +11,25 @@ function menuPreload() {
   };
 }
 
+var title, play, highscores;
+
 function menuCreate() {
-  game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-
-  title = game.add.text(40, 80, '[insert game title here]', {font: 'Liberation Mono', fontSize: '64px', fill: '#fff'});
-  play = game.add.text(90, 260, '[A] Play', normalText);
-  highscores = game.add.text(90, 340, '[B] Highscores', normalText);
-
-  enterButton = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-
   game.input.gamepad.start();
   gamepad = game.input.gamepad.pad1;
   gamepad.addCallbacks(this, { onConnect: addButtons });
   //this.state.start('Game');
 
+  game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+  title = game.add.text(40, 80, '[insert game title here]', caption);
+  
+  if (!gamepadConnected) {
+    whichA = 'Enter';
+    whichX = 'F';
+  }
+ 
+  enterButton = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+  fButton = game.input.keyboard.addKey(Phaser.Keyboard.F);
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   jumpButton.onDown.add(jump, this);
 
@@ -34,11 +44,42 @@ function menuCreate() {
   cursors.right.onDown.add(onRight, this);
 }
 
+var highscoresStatus = false;
 function menuUpdate() {
   var input = processInput();
+  if (!highscoresStatus) {
+    if (play) play.destroy();
+    play = game.add.text(90, 260, '[' + whichA + '] Play', normalText);
+    if (highscores) highscores.destroy();
+    highscores = game.add.text(90, 340, '[' + whichX + '] Highscores', normalText);
 
-  if (input.jump || enterButton.isDown) {
-    curState = 'Game';
-    game.state.start("Game");
+    if (input.jump || enterButton.isDown) {
+      curState = 'Game';
+      game.state.start("Game");
+    }
   }
+
+  if (input.X || fButton.isDown) {
+    highscoresStatus = true;
+    if (title) title.destroy();
+    title = game.add.text(40, 80, 'Highscores', caption);
+    if (play) play.destroy();
+    if (highscores) highscores.destroy();
+
+    highscoresData = game.add.text(90, 180, getHighscores(), normalText);
+  }
+}
+
+function getHighscores() {
+  output = '';
+  for (var i = 0; i < localStorage.length; i++) {
+    try {
+      obj = JSON.parse(localStorage.getItem(localStorage.key(i)));
+      if (obj) {
+        console.log(obj);
+        if (obj.time) output += ("Level " + (obj.level+1) + ": " + obj.time + "\n");
+      }
+    } catch (SyntaxError) {}
+  }
+  return output;
 }

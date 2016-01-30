@@ -5,6 +5,7 @@ function processInput() {
   var right = cursors.right.isDown;
   var reset = resetButton.isDown;
   var esc = escButton.isDown;
+  var X = fButton.isDown;
 
   if (gamepadConnected) {
     jump |= buttonA.isDown;
@@ -12,6 +13,7 @@ function processInput() {
     left |= buttonDPadLeft.isDown;
     right |= buttonDPadRight.isDown;
     esc |= buttonB.isDown;
+    X |= buttonX.isDown;
   }
 
   return {
@@ -20,7 +22,8 @@ function processInput() {
     left: left,
     right: right,
     reset: reset,
-    esc: esc
+    esc: esc,
+    X: X
   };
 }
 
@@ -97,6 +100,8 @@ function playerMovement() {
       grabbing.body.position = new Phaser.Point(player.body.position.x + 10, player.body.position.y - 10);
   }
   var input = processInput();
+
+  check_input(input);
 
   if (input.esc) {
     curState = 'MainMenu';
@@ -250,4 +255,7 @@ function spawnPlayer() {
   player.animations.add('stand', [5], 10, true);
 
   game.camera.follow(player, Phaser.Camera.FOLLOW_PLATFORMER);
+  
+  clear_triggers();
+  set_trigger({"jump": true, "run": false, "left": false, "right": false, "reset": false}, 3, function() {console.log("Triple jump trigger")});
 }

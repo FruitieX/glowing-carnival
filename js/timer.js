@@ -18,7 +18,7 @@ function renderTimer() {
   var seconds = (Math.floor(timer.ms / 1000)) % 60;
   var ms = timer.ms % 1000;
   time = minutes + ":" + ("0" + seconds).slice(-2) + ":" + pad(ms, 3);
-  game.debug.text(time, 30, 30);
+  // game.debug.text(time, 30, 30);
 }
 
 function saveTime(levelId) {
