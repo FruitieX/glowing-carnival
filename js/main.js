@@ -53,6 +53,7 @@ function preload() {
   game.load.image('ground1_', 'assets/Tiles/tile_169.png');
   game.load.image('ground1_t', 'assets/Tiles/tile_194.png');
   game.load.image('ground1_b', 'assets/Tiles/tile_195.png');
+  game.load.image('ground1_ltrb', 'assets/Tiles/tile_196.png');
 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
 }
