@@ -5,6 +5,7 @@ function processInput() {
   var right = cursors.right.isDown;
   var reset = resetButton.isDown;
   var esc = escButton.isDown;
+  var X = fButton.isDown;
 
   if (gamepadConnected) {
     jump |= buttonA.isDown;
@@ -12,6 +13,7 @@ function processInput() {
     left |= buttonDPadLeft.isDown;
     right |= buttonDPadRight.isDown;
     esc |= buttonB.isDown;
+    X |= buttonX.isDown;
   }
 
   return {
@@ -20,7 +22,8 @@ function processInput() {
     left: left,
     right: right,
     reset: reset,
-    esc: esc
+    esc: esc,
+    X: X
   };
 }
 
