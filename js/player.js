@@ -154,7 +154,6 @@ function playerMovement() {
   } else if (input.right) {
     var skipMove = false;
 
-    console.log(player.body.velocity.y);
     if (!player.body.touching.down && player.body.velocity.y < wallClingMaxVelocity) {
       // check for wall touch to the left
       var walljumpPlayer = game.add.sprite(player.body.position.x,
