@@ -73,8 +73,6 @@ function create() {
 
   loadLevel(levelId);
 
-  game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   jumpButton.onDown.add(jump, this);
 
@@ -88,10 +86,14 @@ function create() {
   startTimer();
 }
 
-function touchlava() {
+function reset() {
     player.kill();
     startTimer();
     spawnPlayer();
+}
+
+function touchlava() {
+    reset();
 }
 
 function passCheckpoint(player, checkpoint) {
@@ -101,18 +103,19 @@ function passCheckpoint(player, checkpoint) {
     }
 }
 
-function touchBouncy(pl, bouncy) {
-    if (runButton.isDown) {
-        grab(bouncy);
-    }
+function touchGrabbable(player, grabbable) {
+  var input = processInput();
+  if (input.run) {
+    grab(grabbable);
+  }
 }
 
 function update() {
   game.physics.arcade.collide(player, platforms);
 
   game.physics.arcade.collide(player, lava, touchlava, null, this);
-  game.physics.arcade.collide(player, bouncyTiles, touchBouncy, null, this);
-  game.physics.arcade.collide(bouncyTiles, platforms);
+  game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
+  game.physics.arcade.collide(grabbables, platforms);
 
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 
@@ -127,6 +130,6 @@ function render() {
   //game.debug.cameraInfo(game.camera, 32, 32);
   //game.debug.spriteCoords(player, 32, 500);
   renderTimer();
-  game.debug.bodyInfo(player, 32, 40);
-  game.debug.body(player);
+  //game.debug.bodyInfo(player, 32, 40);
+  //game.debug.body(player);
 }
