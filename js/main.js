@@ -33,7 +33,7 @@ function preload() {
   game.load.image('bg0', 'assets/Background/sky.png');
   game.load.image('bg1', 'assets/Background/bg_layer4.png');
 
-  game.load.image('lava', 'assets/Tiles/tile_15.png');
+  game.load.image('lava', 'assets/Obstacles/spikes_a.png');
   game.load.image('checkpoint', 'assets/Tiles/tile_214.png');
   game.load.image('bouncy', 'assets/Tiles/tile_03.png');
   game.load.image('gravity', 'assets/Tiles/tile_341.png');
@@ -81,6 +81,9 @@ function create() {
 
   cursors = game.input.keyboard.createCursorKeys();
   cursors.up.onDown.add(jump, this);
+
+  cursors.left.onDown.add(onLeft, this);
+  cursors.right.onDown.add(onRight, this);
 
   spawnPlayer();
 
