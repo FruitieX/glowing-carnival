@@ -60,10 +60,12 @@ function playerMovement() {
       player.body.position.y + player.body.height < game.world.bounds.y ||
       player.body.position.x > game.world.bounds.width ||
       player.body.position.y > game.world.bounds.height) {
-    console.log('YOU\'RE WINNER!');
     game.world.removeAll();
-    loadLevel(level2);
-
+    if (++level == levels.length) {
+      console.log('YOU\'RE WINNER!');
+      level = 0;
+    }
+    loadLevel(levels[level]);
     spawnPlayer();
   }
 }
