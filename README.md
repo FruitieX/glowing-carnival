@@ -12,7 +12,7 @@ use the included node.js static server script as follows:
 1. Install `nodejs` and `npm` using your package manager or
    https://nodejs.org/en/download/
 2. Run `npm install`
-3. Run `npm start`
+3. Run `npm start` (if that fails try `nodejs server.js || node server.js`)
 
 The node.js server will auto-reload your browser when any source files change,
 and has `Cache-Control` disabled so you always use the latest code.
