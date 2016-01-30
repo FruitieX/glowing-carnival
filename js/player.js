@@ -89,7 +89,6 @@ function playerMovement() {
   if (grabbing && !input.run) {
       grabbing.body.velocity.x = player.body.velocity.x * bouncyThrowMultiplier;
       grabbing = null;
-      console.log(grabbing);
   }
 
   // set acceleration to 0.

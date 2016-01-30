@@ -103,7 +103,6 @@ function passCheckpoint(player, checkpoint) {
 
 function touchBouncy(pl, bouncy) {
     if (runButton.isDown) {
-        console.log(player);
         grab(bouncy);
     }
 }
