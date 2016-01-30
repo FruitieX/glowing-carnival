@@ -16,10 +16,10 @@ function pad(n, width, z) {
 }
 
 function renderTimer() {
-  var minutes = timer.ms / (1000 * 60)
-  var seconds = timer.ms / 1000;
+  var minutes = (Math.floor(timer.ms / (1000 * 60))) % 60;
+  var seconds = (Math.floor(timer.ms / 1000)) % 60;
   var ms = timer.ms % 1000;
-  time = minutes.toFixed(0) + ":" + seconds.toFixed(0) + ":" + pad(ms, 3);
+  time = minutes + ":" + seconds + ":" + pad(ms, 3);
   game.debug.text(time, 30, 30);
 }
 
