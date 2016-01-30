@@ -1,15 +1,18 @@
 function processInput() {
+  var jump = jumpButton.isDown || cursors.up.isDown;
   var run = runButton.isDown;
   var left = cursors.left.isDown;
   var right = cursors.right.isDown;
 
   if (gamepadConnected) {
-    run |= buttonX.isDown;
+    jump |= buttonA.isDown;
+    run |= buttonX.isDown || buttonR2.isDown;
     left |= buttonDPadLeft.isDown;
     right |= buttonDPadRight.isDown;
   }
 
   return {
+    jump: jump,
     run: run,
     left: left,
     right: right
@@ -31,10 +34,6 @@ function jump() {
   } else if (player.body.touching.right) {
     player.body.velocity.y = -jumpSpeed;
     player.body.velocity.x = input.run ? -runSpeed : -maxSpeed;
-  }
-
-  if (!jumpButton.isDown) {
-    player.body.velocity.y = Math.max(0, player.body.velocity.y);
   }
 }
 
@@ -79,6 +78,10 @@ function playerMovement() {
     //player.animations.stop();
 
     //player.frame = 4;
+  }
+
+  if (!input.jump) {
+    player.body.velocity.y = Math.max(0, player.body.velocity.y);
   }
 
   // out of bounds check for player, acts as win condition

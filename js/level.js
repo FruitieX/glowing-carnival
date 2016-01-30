@@ -2,14 +2,18 @@ function loadLevel(levelId) {
   game.world.removeAll();
 
   // Add the background
-  game.add.sprite(0, 0, 'bg0');
-  game.add.sprite(0, 0, 'bg1');
+  background = game.add.sprite(0, 0, 'bg0');
+  //game.add.sprite(0, 0, 'bg1');
 
   platforms = game.add.group();
   platforms.enableBody = true;
 
   lava = game.add.group();
   lava.enableBody = true;
+  
+  checkpoints = game.add.group();
+  checkpoints.enableBody = true;
+  checkpoints.z = 0;
 
   var scale = 32;
 
@@ -27,11 +31,12 @@ function loadLevel(levelId) {
       mapArray.push(rowArray);
       rowArray = [];
     } else {
-      rowArray.push(cur);11
+      rowArray.push(cur);
     }
   }
-  mapArray.push(rowArray);
 
+  background.width = 64 * scale * (mapArray[0].length + 1);
+  
   for (var y = 0; y < mapArray.length; y++) {
     for (var x = 0; x < mapArray[y].length; x++) {
       if (mapArray[y][x] == "#") {
@@ -94,9 +99,13 @@ function loadLevel(levelId) {
         var lavaTile = lava.create(x * scale, y * scale, 'lava');
         lavaTile.body.immovable = true;
         lavaTile.scale.setTo(scale/64, scale/64);
+      } else if (mapArray[y][x] == 'C') {
+        var checkpoint = checkpoints.create(x * scale, y * scale, 'checkpoint');
+        checkpoint.body.immovable = true;
+        checkpoint.scale.setTo(scale/64, scale/64);
       }
     }
   }
 
-  game.world.setBounds(0, 0, x * scale, (y+1) * scale);
+  game.world.setBounds(0, 0, x * scale, y * scale);
 }

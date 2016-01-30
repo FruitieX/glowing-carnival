@@ -9,18 +9,29 @@ var maxYVelocity = 2000;
 
 var stillDelta = 1; // 1 is pretty slow
 
-var game = new Phaser.Game(1280, 600, Phaser.AUTO, '', {
+var game = new Phaser.Game(1280, 600, Phaser.AUTO, '');
+
+game.state.add('MainMenu', {
+  preload: menuPreload,
+  create: menuCreate
+});
+
+game.state.add('Game', {
   preload: preload,
   create: create,
   update: update,
   render: render
 });
 
+
+game.state.start('MainMenu');
+
 function preload() {
-  game.load.image('bg0', 'assets/Background/bg_layer1.png');
+  game.load.image('bg0', 'assets/Background/sky.png');
   game.load.image('bg1', 'assets/Background/bg_layer4.png');
 
   game.load.image('lava', 'assets/Tiles/tile_15.png');
+  game.load.image('checkpoint', 'assets/Tiles/tile_214.png');
 
   game.load.image('ground1_tb', 'assets/Tiles/tile_111.png');
   game.load.image('ground1_trb', 'assets/Tiles/tile_114.png');
@@ -68,8 +79,10 @@ function create() {
 
   cursors = game.input.keyboard.createCursorKeys();
   cursors.up.onDown.add(jump, this);
+
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   jumpButton.onDown.add(jump, this);
+
   runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
   //timer = startTimer(game);
@@ -78,12 +91,21 @@ function create() {
 
 function touchlava() {
     player.kill();
+    startTimer();
     spawnPlayer();
+}
+
+function passCheckpoint(player, checkpoint) {
+    playerSpawn = {
+        x: checkpoint.body.position.x,
+        y: checkpoint.body.position.y - 64
+    }
 }
 
 function update() {
   game.physics.arcade.collide(player, platforms);
   game.physics.arcade.collide(player, lava, touchlava, null, this);
+  game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 
   // run player input & movement code
   playerMovement();
