@@ -20,6 +20,10 @@ function processInput() {
 }
 
 function jump() {
+  if (curState != 'Game') {
+    return;
+  }
+
   var input = processInput();
 
   //  Allow the player to jump if they are touching the ground.

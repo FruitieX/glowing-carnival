@@ -24,7 +24,7 @@ game.state.add('Game', {
   render: render
 });
 
-
+var curState = 'MainMenu';
 game.state.start('MainMenu');
 
 function preload() {
@@ -72,23 +72,16 @@ function create() {
 
   game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-  spawnPlayer();
+  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  jumpButton.onDown.add(jump, this);
 
-  //game.input.gamepad.start();
-  //gamepad = game.input.gamepad.pad1;
-  //gamepad.addCallbacks(this, { onConnect: addButtons });
+  runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
   cursors = game.input.keyboard.createCursorKeys();
   cursors.up.onDown.add(jump, this);
 
-  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  jumpButton.onDown.add(jump, this);
-  if (gamepadConnected) {
-    buttonA.onDown.add(jump, this);
-  }
-  runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+  spawnPlayer();
 
-  //timer = startTimer(game);
   startTimer();
 }
 
