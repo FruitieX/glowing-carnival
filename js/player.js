@@ -27,6 +27,18 @@ function grab(box) {
     grabbing = box;
 }
 
+var wallClingTime = 2000;
+var wallClingMaxVelocity = 300;
+
+var leftPressedTime = 0;
+function onLeft() {
+  leftPressedTime = Date.now();
+}
+var rightPressedTime = 0;
+function onRight() {
+  rightPressedTime = Date.now();
+}
+
 function jump() {
   if (curState != 'Game') {
     return;
@@ -54,7 +66,7 @@ function jump() {
     walljumpPlayer.body.checkCollision.up = false;
     walljumpPlayer.body.checkCollision.down = false;
 
-    walljumpPlayer.body.position.x = walljumpPlayer.position.x - 1;
+    walljumpPlayer.body.position.x = walljumpPlayer.position.x - 3;
 
     game.physics.arcade.collide(walljumpPlayer, platforms);
 
@@ -65,7 +77,7 @@ function jump() {
       player.body.velocity.x = input.run ? runSpeed : maxSpeed;
     } else {
 
-      walljumpPlayer.body.position.x = walljumpPlayer.position.x + 2;
+      walljumpPlayer.body.position.x = walljumpPlayer.position.x + 6;
       game.physics.arcade.collide(walljumpPlayer, platforms);
       if (walljumpPlayer.body.touching.right) {
         player.body.velocity.y = -jumpSpeed;
@@ -102,23 +114,80 @@ function playerMovement() {
   }
 
   if (input.left) {
-    //  Move to the left
-    player.body.acceleration.x = input.run ? -runAccel : -accel;
+    var skipMove = false;
 
-    // turn instantly if we're on the ground
-    if (player.body.touching.down) {
-      if (player.body.velocity.x > 0) {
-        player.body.velocity.x = 0;
+    if (!player.body.touching.down && player.body.velocity.y < wallClingMaxVelocity) {
+      // check for wall touch to the right
+      var walljumpPlayer = game.add.sprite(player.body.position.x,
+                                           player.body.position.y, 'player');
+      walljumpPlayer.scale.setTo(0.25, 0.25);
+      walljumpPlayer.renderable = false;
+      walljumpPlayer.immovable = true;
+      game.physics.arcade.enable(walljumpPlayer);
+      walljumpPlayer.body.checkCollision.up = false;
+      walljumpPlayer.body.checkCollision.left = false;
+      walljumpPlayer.body.checkCollision.down = false;
+      walljumpPlayer.body.position.x = walljumpPlayer.position.x + 3;
+      game.physics.arcade.collide(walljumpPlayer, platforms);
+
+      if (walljumpPlayer.body.touching.right) {
+        // touching wall to the right, don't move to left right away to
+        // make wall jumps easier
+        if (Date.now() < leftPressedTime + wallClingTime) {
+          skipMove = true;
+        }
+      }
+      walljumpPlayer.destroy();
+    }
+
+    if (!skipMove) {
+      //  Move to the left
+      player.body.acceleration.x = input.run ? -runAccel : -accel;
+
+      // turn instantly if we're on the ground
+      if (player.body.touching.down) {
+        if (player.body.velocity.x > 0) {
+          player.body.velocity.x = 0;
+        }
       }
     }
   } else if (input.right) {
-    //  Move to the right
-    player.body.acceleration.x = input.run ? runAccel : accel;
+    var skipMove = false;
 
-    // turn instantly if we're on the ground
-    if (player.body.touching.down) {
-      if (player.body.velocity.x < 0) {
-        player.body.velocity.x = 0;
+    console.log(player.body.velocity.y);
+    if (!player.body.touching.down && player.body.velocity.y < wallClingMaxVelocity) {
+      // check for wall touch to the left
+      var walljumpPlayer = game.add.sprite(player.body.position.x,
+                                           player.body.position.y, 'player');
+      walljumpPlayer.scale.setTo(0.25, 0.25);
+      walljumpPlayer.renderable = false;
+      walljumpPlayer.immovable = true;
+      game.physics.arcade.enable(walljumpPlayer);
+      walljumpPlayer.body.checkCollision.up = false;
+      walljumpPlayer.body.checkCollision.right = false;
+      walljumpPlayer.body.checkCollision.down = false;
+      walljumpPlayer.body.position.x = walljumpPlayer.position.x - 3;
+      game.physics.arcade.collide(walljumpPlayer, platforms);
+
+      if (walljumpPlayer.body.touching.left) {
+        // touching wall to the right, don't move to left right away to
+        // make wall jumps easier
+        if (Date.now() < rightPressedTime + wallClingTime) {
+          skipMove = true;
+        }
+      }
+      walljumpPlayer.destroy();
+    }
+
+    if (!skipMove) {
+      //  Move to the right
+      player.body.acceleration.x = input.run ? runAccel : accel;
+
+      // turn instantly if we're on the ground
+      if (player.body.touching.down) {
+        if (player.body.velocity.x < 0) {
+          player.body.velocity.x = 0;
+        }
       }
     }
   } else {

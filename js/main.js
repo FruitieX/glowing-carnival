@@ -81,6 +81,9 @@ function create() {
   cursors = game.input.keyboard.createCursorKeys();
   cursors.up.onDown.add(jump, this);
 
+  cursors.left.onDown.add(onLeft, this);
+  cursors.right.onDown.add(onRight, this);
+
   spawnPlayer();
 
   startTimer();

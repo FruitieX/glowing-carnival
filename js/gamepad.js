@@ -41,6 +41,8 @@ function addButtons() {
   buttonDPadUp = gamepad.getButton(Phaser.Gamepad.XBOX360_DPAD_UP);
   buttonDPadDown = gamepad.getButton(Phaser.Gamepad.XBOX360_DPAD_DOWN);
 
+  buttonDPadLeft.onDown.add(onLeft, this);
+  buttonDPadRight.onDown.add(onRight, this);
   /*
   buttonDPadLeft.onDown.add(onDown, this);
   buttonDPadRight.onDown.add(onDown, this);
