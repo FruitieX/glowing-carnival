@@ -103,16 +103,17 @@ function passCheckpoint(player, checkpoint) {
 
 function touchBouncy(pl, bouncy) {
     if (runButton.isDown) {
-        console.log(player);
         grab(bouncy);
     }
 }
 
 function update() {
   game.physics.arcade.collide(player, platforms);
+
   game.physics.arcade.collide(player, lava, touchlava, null, this);
   game.physics.arcade.collide(player, bouncyTiles, touchBouncy, null, this);
   game.physics.arcade.collide(bouncyTiles, platforms);
+
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 
   // run player input & movement code
@@ -126,4 +127,6 @@ function render() {
   //game.debug.cameraInfo(game.camera, 32, 32);
   //game.debug.spriteCoords(player, 32, 500);
   renderTimer();
+  game.debug.bodyInfo(player, 32, 40);
+  game.debug.body(player);
 }
