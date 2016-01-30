@@ -9,7 +9,7 @@ var maxYVelocity = 2000;
 
 var stillDelta = 1; // 1 is pretty slow
 
-var game = new Phaser.Game('100', '100', Phaser.AUTO, '', {
+var game = new Phaser.Game(1280, 600, Phaser.AUTO, '', {
   preload: preload,
   create: create,
   update: update
