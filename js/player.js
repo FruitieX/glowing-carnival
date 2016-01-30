@@ -4,12 +4,14 @@ function processInput() {
   var left = cursors.left.isDown;
   var right = cursors.right.isDown;
   var reset = resetButton.isDown;
+  var esc = escButton.isDown;
 
   if (gamepadConnected) {
     jump |= buttonA.isDown;
     run |= buttonX.isDown || buttonR2.isDown;
     left |= buttonDPadLeft.isDown;
     right |= buttonDPadRight.isDown;
+    esc |= buttonB.isDown;
   }
 
   return {
@@ -17,7 +19,8 @@ function processInput() {
     run: run,
     left: left,
     right: right,
-    reset: reset
+    reset: reset,
+    esc: esc
   };
 }
 
@@ -97,6 +100,11 @@ function playerMovement() {
 
   check_input(input);
 
+  if (input.esc) {
+    curState = 'MainMenu';
+    game.state.start('MainMenu');
+  }
+  
   if (input.reset) {
       reset();
   }

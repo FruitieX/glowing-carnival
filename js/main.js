@@ -4,10 +4,11 @@ var runAccel = 3000;
 var gravity = 2000;
 var bouncyGravity = 1000;
 var bouncyThrowMultiplier = 1.5;
-var maxSpeed = 500;
-var runSpeed = 700;
-var jumpSpeed = 650;
-var maxYVelocity = 2000;
+var fast = 100;
+var maxSpeed = 5 * fast;
+var runSpeed = 7 * fast;
+var jumpSpeed = 6.5 * fast;
+var maxYVelocity = 20 * fast;
 
 var stillDelta = 1; // 1 is pretty slow
 
@@ -53,6 +54,7 @@ function preload() {
   game.load.image('ground1_', 'assets/Tiles/tile_169.png');
   game.load.image('ground1_t', 'assets/Tiles/tile_194.png');
   game.load.image('ground1_b', 'assets/Tiles/tile_195.png');
+  game.load.image('ground1_ltrb', 'assets/Tiles/tile_196.png');
 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
 }
@@ -74,12 +76,13 @@ function create() {
 
   loadLevel(levelId);
 
-  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  jumpButton.onDown.add(jump, this);
+  //jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  //jumpButton.onDown.add(jump, this);
 
-  runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+  //runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
-  cursors = game.input.keyboard.createCursorKeys();
+  //cursors = game.input.keyboard.createCursorKeys();
+  
   cursors.up.onDown.add(jump, this);
 
   cursors.left.onDown.add(onLeft, this);
@@ -92,7 +95,6 @@ function create() {
 
 function reset() {
     player.kill();
-    startTimer();
     spawnPlayer();
 }
 
@@ -105,7 +107,10 @@ function passCheckpoint(player, checkpoint) {
         x: checkpoint.body.position.x,
         y: checkpoint.body.position.y - 64
     }
+    return false;
 }
+
+var grabbable = [];
 
 function touchGrabbable(player, grabbable) {
   var input = processInput();
@@ -114,12 +119,51 @@ function touchGrabbable(player, grabbable) {
   }
 }
 
+var gravityTimer;
+
 function touchGravity(player, gravityBox) {
-    if (player.body.gravity.y == gravity) {
-        player.body.gravity.y = gravity / 2;
-    } else {
-        player.body.gravity.y = gravity;
+    if (!gravityTimer) {
+        if (player.body.gravity.y == gravity) {
+            player.body.gravity.y = gravity / 2;
+        } else {
+            player.body.gravity.y = gravity;
+        }
+        gravityTimer = game.time.create(false);
+        gravityTimer.add(1000, killtimer, this);
+        gravityTimer.start();
     }
+}
+
+function killtimer() {
+    gravityTimer = null;
+}
+
+function retardateGrabbables() {
+    for (var i = 0; i < grabbables.children.length; ++i) {
+        var speed = grabbables.children[i].body.velocity.x
+        grabbables.children[i].body.acceleration.x = -(speed && speed / Math.abs(speed)) * 500;
+    }
+}
+
+var sanicTimer;
+
+var oldMax = maxSpeed;
+var oldRun = runSpeed;
+
+function goFast(player, sanic) {
+  if (!sanicTimer) {
+    maxSpeed = 1000 * fast;
+    runSpeed = 1000 * fast;
+  }
+  sanicTimer = game.time.create(false);
+  sanicTimer.add(3000, goSlow, this);
+  sanicTimer.start();
+}
+
+function goSlow() {
+  sanicTimer = null;
+  maxSpeed = oldMax;
+  runSpeed = oldRun;
 }
 
 function update() {
@@ -128,14 +172,19 @@ function update() {
   game.physics.arcade.collide(player, lava, touchlava, null, this);
   game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
   game.physics.arcade.collide(grabbables, platforms);
+  game.physics.arcade.collide(grabbables, gravities);
   game.physics.arcade.collide(player, gravities, touchGravity, null, this);
-  game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
+  game.physics.arcade.overlap(player, checkpoints, null, passCheckpoint, this);
+  game.physics.arcade.collide(player, sanics, goFast, null, this);
 
   // run player input & movement code
   playerMovement();
 
   // player animations
   updateAnimations();
+  
+  // Retardate grabbables
+  retardateGrabbables();
 }
 
 function render() {
