@@ -126,6 +126,6 @@ function render() {
   //game.debug.cameraInfo(game.camera, 32, 32);
   //game.debug.spriteCoords(player, 32, 500);
   renderTimer();
-  game.debug.bodyInfo(player, 32, 40);
-  game.debug.body(player);
+  //game.debug.bodyInfo(player, 32, 40);
+  //game.debug.body(player);
 }

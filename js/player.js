@@ -37,9 +37,6 @@ function jump() {
     player.body.velocity.y = -jumpSpeed;
   } else {
     // walljumps
-    // temp clone of player that's 1px larger in x-dir to check for walljumps
-    // TODO: this is retarded but doing it right took too much time!
-    // why oh why did position.x -= 1, width += 2 not work?!?!?!
     var walljumpPlayer = game.add.sprite(player.body.position.x,
                                      player.body.position.y, 'player');
     //walljumpPlayerRight = game.add.sprite(player.body.position.x,
@@ -55,25 +52,23 @@ function jump() {
     walljumpPlayer.body.checkCollision.up = false;
     walljumpPlayer.body.checkCollision.down = false;
 
-    /*
     walljumpPlayer.body.position.x = walljumpPlayer.position.x - 1;
-    walljumpPlayer.body.width = walljumpPlayer.width + 2;
-    walljumpPlayer.body.halfWidth = walljumpPlayer.body.width / 2;
-    */
-
-    walljumpPlayer.body.setSize(player.body.width * 4 + 2 * 4,
-                                player.body.height * 4,
-                                -1, 0);
-
 
     game.physics.arcade.collide(walljumpPlayer, platforms);
 
-    if (player.body.touching.left) {
+    // TODO: this is retarded but doing it right took too much time!
+    // why did position.x -= 1, width += 2 not work?!?!?!
+    if (walljumpPlayer.body.touching.left) {
       player.body.velocity.y = -jumpSpeed;
       player.body.velocity.x = input.run ? runSpeed : maxSpeed;
-    } else if (player.body.touching.right) {
-      player.body.velocity.y = -jumpSpeed;
-      player.body.velocity.x = input.run ? -runSpeed : -maxSpeed;
+    } else {
+
+      walljumpPlayer.body.position.x = walljumpPlayer.position.x + 2;
+      game.physics.arcade.collide(walljumpPlayer, platforms);
+      if (walljumpPlayer.body.touching.right) {
+        player.body.velocity.y = -jumpSpeed;
+        player.body.velocity.x = input.run ? -runSpeed : -maxSpeed;
+      }
     }
 
     walljumpPlayer.destroy();
