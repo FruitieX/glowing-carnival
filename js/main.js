@@ -88,10 +88,14 @@ function create() {
   startTimer();
 }
 
-function touchlava() {
+function reset() {
     player.kill();
     startTimer();
     spawnPlayer();
+}
+
+function touchlava() {
+    reset();
 }
 
 function passCheckpoint(player, checkpoint) {
