@@ -16,11 +16,15 @@ function addButtons() {
   //  We can't do this until we know that the gamepad has been connected and is started
   buttonA = gamepad.getButton(Phaser.Gamepad.XBOX360_A);
   buttonA.onDown.add(jump, this);
+
   buttonB = gamepad.getButton(Phaser.Gamepad.XBOX360_B);
   buttonX = gamepad.getButton(Phaser.Gamepad.XBOX360_X);
   buttonR2 = gamepad.getButton(Phaser.Gamepad.XBOX360_RIGHT_TRIGGER);
   buttonY = gamepad.getButton(Phaser.Gamepad.XBOX360_Y);
 
+  // Proper displaying of the gamepad buttons in the menu
+  whichA = 'A';
+  whichX = 'X';
   /*
   buttonA.onDown.add(onDown, this);
   buttonB.onDown.add(onDown, this);
@@ -40,6 +44,8 @@ function addButtons() {
   buttonDPadUp = gamepad.getButton(Phaser.Gamepad.XBOX360_DPAD_UP);
   buttonDPadDown = gamepad.getButton(Phaser.Gamepad.XBOX360_DPAD_DOWN);
 
+  buttonDPadLeft.onDown.add(onLeft, this);
+  buttonDPadRight.onDown.add(onRight, this);
   /*
   buttonDPadLeft.onDown.add(onDown, this);
   buttonDPadRight.onDown.add(onDown, this);

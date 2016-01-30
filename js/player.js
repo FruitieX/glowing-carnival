@@ -3,75 +3,207 @@ function processInput() {
   var run = runButton.isDown;
   var left = cursors.left.isDown;
   var right = cursors.right.isDown;
+  var reset = resetButton.isDown;
+  var esc = escButton.isDown;
+  var X = fButton.isDown;
 
   if (gamepadConnected) {
     jump |= buttonA.isDown;
-    run |= buttonX.isDown || buttonR2.isDown;
+    run |= buttonX.isDown || buttonR2.isDown;
     left |= buttonDPadLeft.isDown;
     right |= buttonDPadRight.isDown;
+    esc |= buttonB.isDown;
+    X |= buttonX.isDown;
   }
 
   return {
     jump: jump,
     run: run,
     left: left,
-    right: right
+    right: right,
+    reset: reset,
+    esc: esc,
+    X: X
   };
 }
 
+var grabbing;
+
+function grab(box) {
+    grabbing = box;
+}
+
+var wallClingTime = 200;
+var wallClingMaxVelocity = 30000; // disabled :>
+
+var leftPressedTime = 0;
+function onLeft() {
+  leftPressedTime = Date.now();
+}
+var rightPressedTime = 0;
+function onRight() {
+  rightPressedTime = Date.now();
+}
+
 function jump() {
+  if (curState != 'Game') {
+    return;
+  }
+
   var input = processInput();
 
   //  Allow the player to jump if they are touching the ground.
-  if (player.body.touching.down) {
+  if (player.body.onFloor()) {
     player.body.velocity.y = -jumpSpeed;
-  }
+  } else {
+    // walljumps
+    var walljumpPlayer = game.add.sprite(player.body.position.x,
+                                     player.body.position.y, 'player');
+    //walljumpPlayerRight = game.add.sprite(player.body.position.x,
+    //                                      player.body.position.y, 'player');
 
-  // walljumps TODO: only works if holding left/right :(
-  else if (player.body.touching.left) {
-    player.body.velocity.y = -jumpSpeed;
-    player.body.velocity.x = input.run ? runSpeed : maxSpeed;
-  } else if (player.body.touching.right) {
-    player.body.velocity.y = -jumpSpeed;
-    player.body.velocity.x = input.run ? -runSpeed : -maxSpeed;
+    walljumpPlayer.scale.setTo(0.5, 0.5);
+
+    walljumpPlayer.renderable = false;
+    walljumpPlayer.immovable = true;
+
+    game.physics.arcade.enable(walljumpPlayer);
+
+    walljumpPlayer.body.checkCollision.up = false;
+    walljumpPlayer.body.checkCollision.down = false;
+
+    walljumpPlayer.body.position.x = walljumpPlayer.position.x - 3;
+
+    game.physics.arcade.collide(walljumpPlayer, groundLayer);
+
+    // TODO: this is retarded but doing it right took too much time!
+    // why did position.x -= 1, width += 2 not work?!?!?!
+    if (walljumpPlayer.body.blocked.left) {
+      player.body.velocity.y = -jumpSpeed;
+      player.body.velocity.x = input.run ? runSpeed : maxSpeed;
+    } else {
+
+      walljumpPlayer.body.position.x = walljumpPlayer.position.x + 6;
+      game.physics.arcade.collide(walljumpPlayer, groundLayer);
+      if (walljumpPlayer.body.blocked.right) {
+        player.body.velocity.y = -jumpSpeed;
+        player.body.velocity.x = input.run ? -runSpeed : -maxSpeed;
+      }
+    }
+
+    walljumpPlayer.destroy();
   }
 }
 
 function playerMovement() {
+  if (grabbing) {
+      grabbing.body.position = new Phaser.Point(player.body.position.x + 10, player.body.position.y - 10);
+  }
   var input = processInput();
+
+  check_input(input);
+
+  if (input.esc) {
+    curState = 'MainMenu';
+    game.state.start('MainMenu');
+  }
+  
+  if (input.reset) {
+      reset();
+  }
+  if (grabbing && !input.run) {
+      grabbing.body.velocity.x = player.body.velocity.x * bouncyThrowMultiplier;
+      grabbing = null;
+  }
 
   // set acceleration to 0.
   // below code will set it to something else if we still want to move
   player.body.acceleration.x = 0;
 
   if(input.run) {
-    player.body.maxVelocity.x = runSpeed;  
+    player.body.maxVelocity.x = runSpeed;
   } else {
     player.body.maxVelocity.x = maxSpeed;
   }
 
   if (input.left) {
-    //  Move to the left
-    player.body.acceleration.x = input.run ? -runAccel : -accel;
+    var skipMove = false;
 
-    // turn instantly if we're on the ground
-    if (player.body.touching.down) {
-      if (player.body.velocity.x > 0) {
-        player.body.velocity.x = 0;
+    if (!player.body.onFloor() && player.body.velocity.y < wallClingMaxVelocity) {
+      // check for wall touch to the right
+      var walljumpPlayer = game.add.sprite(player.body.position.x,
+                                           player.body.position.y, 'player');
+      walljumpPlayer.scale.setTo(0.5, 0.5);
+      walljumpPlayer.renderable = false;
+      walljumpPlayer.immovable = true;
+      game.physics.arcade.enable(walljumpPlayer);
+      walljumpPlayer.body.checkCollision.up = false;
+      walljumpPlayer.body.checkCollision.left = false;
+      walljumpPlayer.body.checkCollision.down = false;
+      walljumpPlayer.body.position.x = walljumpPlayer.position.x + 3;
+      game.physics.arcade.collide(walljumpPlayer, groundLayer);
+
+      if (walljumpPlayer.body.blocked.right) {
+        // touching wall to the right, don't move to left right away to
+        // make wall jumps easier
+        if (Date.now() < leftPressedTime + wallClingTime) {
+          skipMove = true;
+        }
+      }
+      walljumpPlayer.destroy();
+    }
+
+    if (!skipMove) {
+      //  Move to the left
+      player.body.acceleration.x = input.run ? -runAccel : -accel;
+
+      // turn instantly if we're on the ground
+      if (player.body.onFloor()) {
+        if (player.body.velocity.x > 0) {
+          player.body.velocity.x = 0;
+        }
       }
     }
   } else if (input.right) {
-    //  Move to the right
-    player.body.acceleration.x = input.run ? runAccel : accel;
+    var skipMove = false;
 
-    // turn instantly if we're on the ground
-    if (player.body.touching.down) {
-      if (player.body.velocity.x < 0) {
-        player.body.velocity.x = 0;
+    if (!player.body.onFloor() && player.body.velocity.y < wallClingMaxVelocity) {
+      // check for wall touch to the left
+      var walljumpPlayer = game.add.sprite(player.body.position.x,
+                                           player.body.position.y, 'player');
+      walljumpPlayer.scale.setTo(0.5, 0.5);
+      walljumpPlayer.renderable = false;
+      walljumpPlayer.immovable = true;
+      game.physics.arcade.enable(walljumpPlayer);
+      walljumpPlayer.body.checkCollision.up = false;
+      walljumpPlayer.body.checkCollision.right = false;
+      walljumpPlayer.body.checkCollision.down = false;
+      walljumpPlayer.body.position.x = walljumpPlayer.position.x - 3;
+      game.physics.arcade.collide(walljumpPlayer, groundLayer);
+
+      if (walljumpPlayer.body.blocked.left) {
+        // touching wall to the right, don't move to left right away to
+        // make wall jumps easier
+        if (Date.now() < rightPressedTime + wallClingTime) {
+          skipMove = true;
+        }
+      }
+      walljumpPlayer.destroy();
+    }
+
+    if (!skipMove) {
+      //  Move to the right
+      player.body.acceleration.x = input.run ? runAccel : accel;
+
+      // turn instantly if we're on the ground
+      if (player.body.onFloor()) {
+        if (player.body.velocity.x < 0) {
+          player.body.velocity.x = 0;
+        }
       }
     }
   } else {
-    if (player.body.touching.down) {
+    if (player.body.onFloor()) {
       player.body.velocity.x = 0;
     }
     //  Stand still
@@ -102,7 +234,7 @@ function playerMovement() {
 
 function spawnPlayer() {
   player = game.add.sprite(playerSpawn.x, playerSpawn.y, 'player');
-  player.scale.setTo(0.25, 0.25);
+  player.scale.setTo(0.5, 0.5);
 
   //  We need to enable physics on the player
   game.physics.arcade.enable(player);
@@ -122,5 +254,8 @@ function spawnPlayer() {
   player.animations.add('jump', [4], 10, true);
   player.animations.add('stand', [5], 10, true);
 
-  game.camera.follow(player);
+  game.camera.follow(player, Phaser.Camera.FOLLOW_PLATFORMER);
+  
+  clear_triggers();
+  set_trigger({"jump": true, "run": false, "left": false, "right": false, "reset": false}, 3, function() {console.log("Triple jump trigger")});
 }

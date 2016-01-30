@@ -1,3 +1,5 @@
+var scale = 32;
+
 function loadLevel(levelId) {
   game.world.removeAll();
 
@@ -5,6 +7,39 @@ function loadLevel(levelId) {
   background = game.add.sprite(0, 0, 'bg0');
   //game.add.sprite(0, 0, 'bg1');
 
+  map = game.add.tilemap('map');
+
+  // what we call the tileset in Tiled vs in preload()
+  map.addTilesetImage('tileset', 'tiles');
+
+  // layer name in Tiled
+  groundLayer = map.createLayer('ground');
+
+  groundLayer.resizeWorld();
+
+  map.setCollisionBetween(0, 70);
+  map.setCollisionBetween(74, 523);
+
+  var spawn = game.add.group();
+  map.createFromObjects('spawn', 'spawn', '', 0, false, false, spawn);
+
+  spawn.forEach(function(spawnPoint) {
+    playerSpawn = {
+      x: spawnPoint.x,
+      y: spawnPoint.y
+    }
+  });
+
+  lavaGroup = game.add.group();
+  map.createFromTiles(72, null, '', 0, lavaGroup);
+
+  lavaGroup.forEach(function(tile) {
+      var temp = lava.create(tile.x, tile.y, 'lavaGroup');
+      lavaTile.body.immovable = true;
+      //lavaTile.scale.setTo(scale/64, scale/64);
+  });
+
+  /*
   platforms = game.add.group();
   platforms.enableBody = true;
 
@@ -13,7 +48,15 @@ function loadLevel(levelId) {
   
   checkpoints = game.add.group();
   checkpoints.enableBody = true;
-  checkpoints.z = 0;
+  
+  grabbables = game.add.group();
+  grabbables.enableBody = true;
+
+  gravities = game.add.group();
+  gravities.enableBody = true;
+
+  sanics = game.add.group();
+  sanics.enableBody = true;
 
   var scale = 32;
 
@@ -103,9 +146,24 @@ function loadLevel(levelId) {
         var checkpoint = checkpoints.create(x * scale, y * scale, 'checkpoint');
         checkpoint.body.immovable = true;
         checkpoint.scale.setTo(scale/64, scale/64);
+      } else if (mapArray[y][x] == 'B') {
+        var grabbable = grabbables.create(x * scale, y * scale, 'bouncy');
+        //bouncy.body.immovable = true;
+        grabbable.body.bounce.y = 0.5;
+        grabbable.body.gravity.y = bouncyGravity;
+        grabbable.scale.setTo(scale/64, scale/64);
+      } else if (mapArray[y][x] == 'G') {
+        var gravity = gravities.create(x * scale, y * scale, 'gravity');
+        gravity.body.immovable = true;
+        gravity.scale.setTo(scale/64, scale/64);
+      } else if (mapArray[y][x] == 'S') {
+        var sanic = sanics.create(x * scale, y * scale, 'sanic');
+        sanic.body.immovable = true;
+        sanic.scale.setTo(scale/64, scale/64);
       }
     }
   }
+ */
 
-  game.world.setBounds(0, 0, x * scale, y * scale);
+  //game.world.setBounds(0, 0, x * scale, y * scale);
 }
