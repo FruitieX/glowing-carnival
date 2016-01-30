@@ -19,6 +19,12 @@ function processInput() {
   };
 }
 
+var grabbing;
+
+function grab(box) {
+    grabbing = box;
+}
+
 function jump() {
   var input = processInput();
 
@@ -38,7 +44,16 @@ function jump() {
 }
 
 function playerMovement() {
+  if (grabbing) {
+      grabbing.body.position = new Phaser.Point(player.body.position.x + 10, player.body.position.y - 10);
+  }
   var input = processInput();
+  
+  if (grabbing && !input.run) {
+      grabbing.body.velocity.x = player.body.velocity.x * bouncyThrowMultiplier;
+      grabbing = null;
+      console.log(grabbing);
+  }
 
   // set acceleration to 0.
   // below code will set it to something else if we still want to move

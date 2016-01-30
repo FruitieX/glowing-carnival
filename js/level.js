@@ -13,7 +13,9 @@ function loadLevel(levelId) {
   
   checkpoints = game.add.group();
   checkpoints.enableBody = true;
-  checkpoints.z = 0;
+  
+  bouncyTiles = game.add.group();
+  bouncyTiles.enableBody = true;
 
   var scale = 32;
 
@@ -102,6 +104,12 @@ function loadLevel(levelId) {
         var checkpoint = checkpoints.create(x * scale, y * scale, 'checkpoint');
         checkpoint.body.immovable = true;
         checkpoint.scale.setTo(scale/64, scale/64);
+      } else if (mapArray[y][x] == 'B') {
+        var bouncy = bouncyTiles.create(x * scale, y * scale, 'bouncy');
+        //bouncy.body.immovable = true;
+        bouncy.body.bounce.y = 0.5;
+        bouncy.body.gravity.y = bouncyGravity;
+        bouncy.scale.setTo(scale/64, scale/64);
       }
     }
   }
