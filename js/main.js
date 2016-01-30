@@ -107,6 +107,7 @@ function passCheckpoint(player, checkpoint) {
         x: checkpoint.body.position.x,
         y: checkpoint.body.position.y - 64
     }
+    return false;
 }
 
 var grabbable = [];
@@ -152,7 +153,7 @@ function update() {
   game.physics.arcade.collide(grabbables, platforms);
   game.physics.arcade.collide(grabbables, gravities);
   game.physics.arcade.collide(player, gravities, touchGravity, null, this);
-  game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
+  game.physics.arcade.overlap(player, checkpoints, null, passCheckpoint, this);
 
   // run player input & movement code
   playerMovement();
