@@ -6,7 +6,7 @@ function processInput() {
 
   if (gamepadConnected) {
     jump |= buttonA.isDown;
-    run |= buttonX.isDown || buttonR2.isDown;
+    run |= buttonX.isDown || buttonR2.isDown;
     left |= buttonDPadLeft.isDown;
     right |= buttonDPadRight.isDown;
   }
@@ -35,15 +35,48 @@ function jump() {
   //  Allow the player to jump if they are touching the ground.
   if (player.body.touching.down) {
     player.body.velocity.y = -jumpSpeed;
-  }
+  } else {
+    // walljumps
+    // temp clone of player that's 1px larger in x-dir to check for walljumps
+    // TODO: this is retarded but doing it right took too much time!
+    // why oh why did position.x -= 1, width += 2 not work?!?!?!
+    var walljumpPlayer = game.add.sprite(player.body.position.x,
+                                     player.body.position.y, 'player');
+    //walljumpPlayerRight = game.add.sprite(player.body.position.x,
+    //                                      player.body.position.y, 'player');
 
-  // walljumps TODO: only works if holding left/right :(
-  else if (player.body.touching.left) {
-    player.body.velocity.y = -jumpSpeed;
-    player.body.velocity.x = input.run ? runSpeed : maxSpeed;
-  } else if (player.body.touching.right) {
-    player.body.velocity.y = -jumpSpeed;
-    player.body.velocity.x = input.run ? -runSpeed : -maxSpeed;
+    walljumpPlayer.scale.setTo(0.25, 0.25);
+
+    walljumpPlayer.renderable = false;
+    walljumpPlayer.immovable = true;
+
+    game.physics.arcade.enable(walljumpPlayer);
+
+    walljumpPlayer.body.checkCollision.up = false;
+    walljumpPlayer.body.checkCollision.down = false;
+
+    /*
+    walljumpPlayer.body.position.x = walljumpPlayer.position.x - 1;
+    walljumpPlayer.body.width = walljumpPlayer.width + 2;
+    walljumpPlayer.body.halfWidth = walljumpPlayer.body.width / 2;
+    */
+
+    walljumpPlayer.body.setSize(player.body.width * 4 + 2 * 4,
+                                player.body.height * 4,
+                                -1, 0);
+
+
+    game.physics.arcade.collide(walljumpPlayer, platforms);
+
+    if (player.body.touching.left) {
+      player.body.velocity.y = -jumpSpeed;
+      player.body.velocity.x = input.run ? runSpeed : maxSpeed;
+    } else if (player.body.touching.right) {
+      player.body.velocity.y = -jumpSpeed;
+      player.body.velocity.x = input.run ? -runSpeed : -maxSpeed;
+    }
+
+    walljumpPlayer.destroy();
   }
 }
 
@@ -52,11 +85,10 @@ function playerMovement() {
       grabbing.body.position = new Phaser.Point(player.body.position.x + 10, player.body.position.y - 10);
   }
   var input = processInput();
-  
+
   if (grabbing && !input.run) {
       grabbing.body.velocity.x = player.body.velocity.x * bouncyThrowMultiplier;
       grabbing = null;
-      console.log(grabbing);
   }
 
   // set acceleration to 0.
@@ -64,7 +96,7 @@ function playerMovement() {
   player.body.acceleration.x = 0;
 
   if(input.run) {
-    player.body.maxVelocity.x = runSpeed;  
+    player.body.maxVelocity.x = runSpeed;
   } else {
     player.body.maxVelocity.x = maxSpeed;
   }
