@@ -68,8 +68,10 @@ function create() {
 
   cursors = game.input.keyboard.createCursorKeys();
   cursors.up.onDown.add(jump, this);
+
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   jumpButton.onDown.add(jump, this);
+
   runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
   //timer = startTimer(game);
