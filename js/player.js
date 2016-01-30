@@ -1,17 +1,28 @@
+function processInput() {
+  return {
+    run: runButton.isDown,
+    jump: jumpButton.isDown || cursors.up.isDown,
+    left: cursors.left.isDown,
+    right: cursors.right.isDown
+  };
+}
+
 function playerMovement() {
+  var input = processInput();
+
   // set acceleration to 0.
   // below code will set it to something else if we still want to move
   player.body.acceleration.x = 0;
 
-  if(runButton.isDown) {
+  if(input.run) {
     player.body.maxVelocity.x = runSpeed;  
   } else {
     player.body.maxVelocity.x = maxSpeed;
   }
 
-  if (cursors.left.isDown) {
+  if (input.left) {
     //  Move to the left
-    player.body.acceleration.x = runButton.isDown ? -runAccel : -accel;
+    player.body.acceleration.x = input.run ? -runAccel : -accel;
 
     // turn instantly if we're on the ground
     if (player.body.touching.down) {
@@ -19,9 +30,9 @@ function playerMovement() {
         player.body.velocity.x = 0;
       }
     }
-  } else if (cursors.right.isDown) {
+  } else if (input.right) {
     //  Move to the right
-    player.body.acceleration.x = runButton.isDown ? runAccel : accel;
+    player.body.acceleration.x = input.run ? runAccel : accel;
 
     // turn instantly if we're on the ground
     if (player.body.touching.down) {
@@ -39,23 +50,21 @@ function playerMovement() {
     //player.frame = 4;
   }
 
-  var jump = jumpButton.isDown || cursors.up.isDown;
-
   //  Allow the player to jump if they are touching the ground.
-  if (jump && player.body.touching.down) {
+  if (input.jump && player.body.touching.down) {
     player.body.velocity.y = -jumpSpeed;
   }
 
   // walljumps TODO: only works if holding left/right :(
-  else if (jump && player.body.touching.left) {
+  else if (input.jump && player.body.touching.left) {
     player.body.velocity.y = -jumpSpeed;
-    player.body.velocity.x = runButton.isDown ? runSpeed : maxSpeed;
-  } else if (jump && player.body.touching.right) {
+    player.body.velocity.x = input.run ? runSpeed : maxSpeed;
+  } else if (input.jump && player.body.touching.right) {
     player.body.velocity.y = -jumpSpeed;
-    player.body.velocity.x = runButton.isDown ? -runSpeed : -maxSpeed;
+    player.body.velocity.x = input.run ? -runSpeed : -maxSpeed;
   }
 
-  if (!jump) {
+  if (!input.jump) {
     player.body.velocity.y = Math.max(0, player.body.velocity.y);
   }
 
