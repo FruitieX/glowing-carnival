@@ -3,9 +3,7 @@ var time;
 
 function startTimer() {
   timer = game.time.create(false);
-    
   timer.start();
-    
   return timer;
 }
 
