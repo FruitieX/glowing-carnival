@@ -116,12 +116,24 @@ function touchGrabbable(player, grabbable) {
   }
 }
 
+var gravityTimer;
+
 function touchGravity(player, gravityBox) {
-    if (player.body.gravity.y == gravity) {
-        player.body.gravity.y = gravity / 2;
-    } else {
-        player.body.gravity.y = gravity;
+    if (!gravityTimer) {
+        console.log("HERE");
+        if (player.body.gravity.y == gravity) {
+            player.body.gravity.y = gravity / 2;
+        } else {
+            player.body.gravity.y = gravity;
+        }
+        gravityTimer = game.time.create(false);
+        timer.add(1000, killtimer, this);
+        timer.start();
     }
+}
+
+function killtimer() {
+    gravityTimer = null;
 }
 
 function retardateGrabbables() {
