@@ -33,9 +33,10 @@ function preload() {
   game.load.image('bg0', 'assets/Background/sky.png');
   game.load.image('bg1', 'assets/Background/bg_layer4.png');
 
-  game.load.image('lava', 'assets/Tiles/tile_15.png');
+  game.load.image('lava', 'assets/Obstacles/spikes_a.png');
   game.load.image('checkpoint', 'assets/Tiles/tile_214.png');
   game.load.image('bouncy', 'assets/Tiles/tile_03.png');
+  game.load.image('gravity', 'assets/Tiles/tile_341.png');
 
   game.load.image('ground1_tb', 'assets/Tiles/tile_111.png');
   game.load.image('ground1_trb', 'assets/Tiles/tile_114.png');
@@ -82,6 +83,9 @@ function create() {
   
   cursors.up.onDown.add(jump, this);
 
+  cursors.left.onDown.add(onLeft, this);
+  cursors.right.onDown.add(onRight, this);
+
   spawnPlayer();
 
   startTimer();
@@ -104,11 +108,28 @@ function passCheckpoint(player, checkpoint) {
     }
 }
 
+var grabbable = [];
+
 function touchGrabbable(player, grabbable) {
   var input = processInput();
   if (input.run) {
     grab(grabbable);
   }
+}
+
+function touchGravity(player, gravityBox) {
+    if (player.body.gravity.y == gravity) {
+        player.body.gravity.y = gravity / 2;
+    } else {
+        player.body.gravity.y = gravity;
+    }
+}
+
+function retardateGrabbables() {
+    for (var i = 0; i < grabbables.children.length; ++i) {
+        var speed = grabbables.children[i].body.velocity.x
+        grabbables.children[i].body.acceleration.x = -(speed && speed / Math.abs(speed)) * 500;
+    }
 }
 
 function update() {
@@ -117,7 +138,8 @@ function update() {
   game.physics.arcade.collide(player, lava, touchlava, null, this);
   game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
   game.physics.arcade.collide(grabbables, platforms);
-
+  game.physics.arcade.collide(grabbables, gravities);
+  game.physics.arcade.collide(player, gravities, touchGravity, null, this);
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 
   // run player input & movement code
@@ -125,6 +147,9 @@ function update() {
 
   // player animations
   updateAnimations();
+  
+  // Retardate grabbables
+  retardateGrabbables();
 }
 
 function render() {
