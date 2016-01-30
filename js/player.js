@@ -55,6 +55,10 @@ function playerMovement() {
     player.body.velocity.x = runButton.isDown ? -runSpeed : -maxSpeed;
   }
 
+  if (!jump) {
+    player.body.velocity.y = Math.max(0, player.body.velocity.y);
+  }
+
   // out of bounds check for player, acts as win condition
   if (player.body.position.x + player.body.width  < game.world.bounds.x ||
       player.body.position.y + player.body.height < game.world.bounds.y ||
