@@ -18,6 +18,7 @@ function addButtons() {
   buttonA.onDown.add(jump, this);
   buttonB = gamepad.getButton(Phaser.Gamepad.XBOX360_B);
   buttonX = gamepad.getButton(Phaser.Gamepad.XBOX360_X);
+  buttonR2 = gamepad.getButton(Phaser.Gamepad.XBOX360_RIGHT_TRIGGER);
   buttonY = gamepad.getButton(Phaser.Gamepad.XBOX360_Y);
 
   /*
