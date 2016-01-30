@@ -104,6 +104,8 @@ function passCheckpoint(player, checkpoint) {
     }
 }
 
+var grabbable = [];
+
 function touchGrabbable(player, grabbable) {
   var input = processInput();
   if (input.run) {
@@ -119,12 +121,20 @@ function touchGravity(player, gravityBox) {
     }
 }
 
+function retardateGrabbables() {
+    for (var i = 0; i < grabbables.children.length; ++i) {
+        var speed = grabbables.children[i].body.velocity.x
+        grabbables.children[i].body.acceleration.x = -(speed && speed / Math.abs(speed)) * 500;
+    }
+}
+
 function update() {
   game.physics.arcade.collide(player, platforms);
 
   game.physics.arcade.collide(player, lava, touchlava, null, this);
   game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
   game.physics.arcade.collide(grabbables, platforms);
+  game.physics.arcade.collide(grabbables, gravities);
   game.physics.arcade.collide(player, gravities, touchGravity, null, this);
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 
@@ -133,6 +143,9 @@ function update() {
 
   // player animations
   updateAnimations();
+  
+  // Retardate grabbables
+  retardateGrabbables();
 }
 
 function render() {
