@@ -17,7 +17,8 @@ function loadLevel(levelId) {
 
   groundLayer.resizeWorld();
 
-  map.setCollisionBetween(0, 523);
+  map.setCollisionBetween(0, 70);
+  map.setCollisionBetween(74, 523);
 
   var spawn = game.add.group();
   map.createFromObjects('spawn', 'spawn', '', 0, false, false, spawn);
@@ -27,6 +28,15 @@ function loadLevel(levelId) {
       x: spawnPoint.x,
       y: spawnPoint.y
     }
+  });
+
+  lavaGroup = game.add.group();
+  map.createFromTiles(72, null, '', 0, lavaGroup);
+
+  lavaGroup.forEach(function(tile) {
+      var temp = lava.create(tile.x, tile.y, 'lavaGroup');
+      lavaTile.body.immovable = true;
+      //lavaTile.scale.setTo(scale/64, scale/64);
   });
 
   /*

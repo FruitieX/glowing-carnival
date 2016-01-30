@@ -9,6 +9,7 @@ try {
 
 bs.watch('*.html').on('change', bs.reload);
 bs.watch('js/*.js').on('change', bs.reload);
+bs.watch('levels/*.json').on('change', bs.reload);
 
 var port = 8080;
 bs.init({

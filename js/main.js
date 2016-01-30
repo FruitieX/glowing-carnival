@@ -177,14 +177,12 @@ function update() {
   game.physics.arcade.collide(player, groundLayer);
   //game.physics.arcade.collide(player, platforms);
 
-  /*
-  game.physics.arcade.collide(player, lava, touchlava, null, this);
-  game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
-  game.physics.arcade.collide(grabbables, platforms);
-  game.physics.arcade.collide(grabbables, gravities);
-  game.physics.arcade.collide(player, gravities, touchGravity, null, this);
-  game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
-  */
+  game.physics.arcade.collide(player, lavaGroup, touchlava, null, this);
+  //game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
+  //game.physics.arcade.collide(grabbables, platforms);
+  //game.physics.arcade.collide(grabbables, gravities);
+  //game.physics.arcade.collide(player, gravities, touchGravity, null, this);
+  //game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
   //game.physics.arcade.overlap(player, checkpoints, null, passCheckpoint, this);
   //game.physics.arcade.collide(player, sanics, goFast, null, this);
 
