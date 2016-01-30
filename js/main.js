@@ -74,12 +74,13 @@ function create() {
 
   loadLevel(levelId);
 
-  jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-  jumpButton.onDown.add(jump, this);
+  //jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  //jumpButton.onDown.add(jump, this);
 
-  runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+  //runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
-  cursors = game.input.keyboard.createCursorKeys();
+  //cursors = game.input.keyboard.createCursorKeys();
+  
   cursors.up.onDown.add(jump, this);
 
   cursors.left.onDown.add(onLeft, this);
