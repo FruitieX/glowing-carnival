@@ -6,7 +6,7 @@ function processInput() {
 
   if (gamepadConnected) {
     jump |= buttonA.isDown;
-    run |= buttonX.isDown || buttonR2.isDown;
+    run |= buttonX.isDown || buttonR2.isDown;
     left |= buttonDPadLeft.isDown;
     right |= buttonDPadRight.isDown;
   }
