@@ -13,7 +13,8 @@ var game = new Phaser.Game(1280, 600, Phaser.AUTO, '');
 
 game.state.add('MainMenu', {
   preload: menuPreload,
-  create: menuCreate
+  create: menuCreate,
+  update: menuUpdate
 });
 
 game.state.add('Game', {
@@ -73,16 +74,18 @@ function create() {
 
   spawnPlayer();
 
-  game.input.gamepad.start();
-  gamepad = game.input.gamepad.pad1;
-  gamepad.addCallbacks(this, { onConnect: addButtons });
+  //game.input.gamepad.start();
+  //gamepad = game.input.gamepad.pad1;
+  //gamepad.addCallbacks(this, { onConnect: addButtons });
 
   cursors = game.input.keyboard.createCursorKeys();
   cursors.up.onDown.add(jump, this);
 
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   jumpButton.onDown.add(jump, this);
-
+  if (gamepadConnected) {
+    buttonA.onDown.add(jump, this);
+  }
   runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
   //timer = startTimer(game);
