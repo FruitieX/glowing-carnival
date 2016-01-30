@@ -4,17 +4,11 @@ function loadLevel(level) {
   game.add.sprite(0, 0, 'bg1');
 
   platforms = game.add.group();
-
   platforms.enableBody = true;
-  
+
   lava = game.add.group();
-  
   lava.enableBody = true;
-  
-  var temp = lava.create(50, 50, 'ground1_l');
-  temp.body.immovable = true;
-  
-  
+
   var scale = 32;
 
   // Indexing variables
@@ -89,11 +83,15 @@ function loadLevel(level) {
         tile.body.checkCollision.down = !down;
         tile.body.checkCollision.left = !left;
         tile.body.checkCollision.right = !right;
-      } else if (mapArray[y][x] == "*") {
+      } else if (mapArray[y][x] == '*') {
         playerSpawn = {
           x: x * scale,
           y: y * scale
         }
+      } else if (mapArray[y][x] == 'L') {
+        var lavaTile = lava.create(x * scale, y * scale, 'lava');
+        lavaTile.body.immovable = true;
+        lavaTile.scale.setTo(scale/64, scale/64);
       }
     }
   }
