@@ -1,4 +1,5 @@
 var timer;
+var time;
 
 function startTimer() {
   timer = game.time.create(false);
@@ -15,8 +16,22 @@ function pad(n, width, z) {
 }
 
 function renderTimer() {
-  var minutes = timer.ms / (1000 * 60)
-  var seconds = timer.ms / 1000;
+  var minutes = (Math.floor(timer.ms / (1000 * 60))) % 60;
+  var seconds = (Math.floor(timer.ms / 1000)) % 60;
   var ms = timer.ms % 1000;
-  game.debug.text(minutes.toFixed(0) + ":" + seconds.toFixed(0) + ":" + pad(ms, 3), 30, 30);
+  time = minutes + ":" + seconds + ":" + pad(ms, 3);
+  game.debug.text(time, 30, 30);
+}
+
+function saveTime(levelId) {
+    var current = {
+        level: levelId,
+        time: time
+    };
+    var previous = JSON.parse(localStorage.getItem("HighScore " + levelId));
+    if(!previous || current.time < previous.time) {
+        localStorage.setItem("HighScore " + levelId, JSON.stringify(current));
+    } else {
+        localStorage.setItem("HighScore " + levelId, JSON.stringify(previous));
+    }
 }

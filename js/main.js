@@ -62,6 +62,10 @@ function create() {
 
   spawnPlayer();
 
+  game.input.gamepad.start();
+  gamepad = game.input.gamepad.pad1;
+  gamepad.addCallbacks(this, { onConnect: addButtons });
+
   cursors = game.input.keyboard.createCursorKeys();
   cursors.up.onDown.add(jump, this);
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);

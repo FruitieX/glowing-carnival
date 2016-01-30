@@ -1,9 +1,18 @@
 function processInput() {
+  var run = runButton.isDown;
+  var left = cursors.left.isDown;
+  var right = cursors.right.isDown;
+
+  if (gamepadConnected) {
+    run |= buttonX.isDown;
+    left |= buttonDPadLeft.isDown;
+    right |= buttonDPadRight.isDown;
+  }
+
   return {
-    run: runButton.isDown,
-    // jump: jumpButton.isDown || cursors.up.isDown,
-    left: cursors.left.isDown,
-    right: cursors.right.isDown
+    run: run,
+    left: left,
+    right: right
   };
 }
 
@@ -81,7 +90,9 @@ function playerMovement() {
       console.log('YOU\'RE WINNER!');
       levelId = 0;
     }
+    saveTime(levelId - 1);
     loadLevel(levelId);
+    startTimer();
     spawnPlayer();
   }
 }
