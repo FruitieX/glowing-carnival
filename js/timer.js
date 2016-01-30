@@ -19,7 +19,7 @@ function renderTimer() {
   var minutes = (Math.floor(timer.ms / (1000 * 60))) % 60;
   var seconds = (Math.floor(timer.ms / 1000)) % 60;
   var ms = timer.ms % 1000;
-  time = minutes + ":" + seconds + ":" + pad(ms, 3);
+  time = minutes + ":" + ("0" + seconds).slice(-2) + ":" + pad(ms, 3);
   game.debug.text(time, 30, 30);
 }
 
