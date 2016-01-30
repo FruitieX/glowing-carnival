@@ -10,6 +10,10 @@ function loadLevel(levelId) {
 
   lava = game.add.group();
   lava.enableBody = true;
+  
+  checkpoints = game.add.group();
+  checkpoints.enableBody = true;
+  checkpoints.z = 0;
 
   var scale = 32;
 
@@ -94,6 +98,10 @@ function loadLevel(levelId) {
         var lavaTile = lava.create(x * scale, y * scale, 'lava');
         lavaTile.body.immovable = true;
         lavaTile.scale.setTo(scale/64, scale/64);
+      } else if (mapArray[y][x] == 'C') {
+        var checkpoint = checkpoints.create(x * scale, y * scale, 'checkpoint');
+        checkpoint.body.immovable = true;
+        checkpoint.scale.setTo(scale/64, scale/64);
       }
     }
   }

@@ -21,6 +21,7 @@ function preload() {
   game.load.image('bg1', 'assets/Background/bg_layer4.png');
 
   game.load.image('lava', 'assets/Tiles/tile_15.png');
+  game.load.image('checkpoint', 'assets/Tiles/tile_214.png');
 
   game.load.image('ground1_tb', 'assets/Tiles/tile_111.png');
   game.load.image('ground1_trb', 'assets/Tiles/tile_114.png');
@@ -83,9 +84,17 @@ function touchlava() {
     spawnPlayer();
 }
 
+function passCheckpoint(player, checkpoint) {
+    playerSpawn = {
+        x: checkpoint.body.position.x,
+        y: checkpoint.body.position.y - 64
+    }
+}
+
 function update() {
   game.physics.arcade.collide(player, platforms);
   game.physics.arcade.collide(player, lava, touchlava, null, this);
+  game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 
   // run player input & movement code
   playerMovement();
