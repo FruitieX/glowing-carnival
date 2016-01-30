@@ -17,6 +17,9 @@ function loadLevel(levelId) {
   grabbables = game.add.group();
   grabbables.enableBody = true;
 
+  gravities = game.add.group();
+  gravities.enableBody = true;
+  
   var scale = 32;
 
   // Indexing variables
@@ -111,6 +114,10 @@ function loadLevel(levelId) {
         grabbable.body.bounce.y = 0.5;
         grabbable.body.gravity.y = bouncyGravity;
         grabbable.scale.setTo(scale/64, scale/64);
+      } else if (mapArray[y][x] == 'G') {
+        var gravity = gravities.create(x * scale, y * scale, 'gravity');
+        gravity.body.immovable = true;
+        gravity.scale.setTo(scale/64, scale/64);
       }
     }
   }
