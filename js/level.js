@@ -2,8 +2,8 @@ function loadLevel(levelId) {
   game.world.removeAll();
 
   // Add the background
-  game.add.sprite(0, 0, 'bg0');
-  game.add.sprite(0, 0, 'bg1');
+  background = game.add.sprite(0, 0, 'bg0');
+  //game.add.sprite(0, 0, 'bg1');
 
   platforms = game.add.group();
   platforms.enableBody = true;
@@ -33,11 +33,12 @@ function loadLevel(levelId) {
       mapArray.push(rowArray);
       rowArray = [];
     } else {
-      rowArray.push(cur);11
+      rowArray.push(cur);
     }
   }
-  mapArray.push(rowArray);
 
+  background.width = 64 * scale * (mapArray[0].length + 1);
+  
   for (var y = 0; y < mapArray.length; y++) {
     for (var x = 0; x < mapArray[y].length; x++) {
       if (mapArray[y][x] == "#") {
@@ -114,5 +115,5 @@ function loadLevel(levelId) {
     }
   }
 
-  game.world.setBounds(0, 0, x * scale, (y+1) * scale);
+  game.world.setBounds(0, 0, x * scale, y * scale);
 }
