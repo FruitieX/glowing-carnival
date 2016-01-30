@@ -36,6 +36,7 @@ function preload() {
   game.load.image('lava', 'assets/Tiles/tile_15.png');
   game.load.image('checkpoint', 'assets/Tiles/tile_214.png');
   game.load.image('bouncy', 'assets/Tiles/tile_03.png');
+  game.load.image('gravity', 'assets/Tiles/tile_341.png');
 
   game.load.image('ground1_tb', 'assets/Tiles/tile_111.png');
   game.load.image('ground1_trb', 'assets/Tiles/tile_114.png');
@@ -113,13 +114,21 @@ function touchGrabbable(player, grabbable) {
   }
 }
 
+function touchGravity(player, gravityBox) {
+    if (player.body.gravity.y == gravity) {
+        player.body.gravity.y = gravity / 2;
+    } else {
+        player.body.gravity.y = gravity;
+    }
+}
+
 function update() {
   game.physics.arcade.collide(player, platforms);
 
   game.physics.arcade.collide(player, lava, touchlava, null, this);
   game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
   game.physics.arcade.collide(grabbables, platforms);
-
+  game.physics.arcade.collide(player, gravities, touchGravity, null, this);
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 
   // run player input & movement code
