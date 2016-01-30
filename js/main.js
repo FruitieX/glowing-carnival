@@ -110,12 +110,18 @@ function touchGrabbable(player, grabbable) {
   }
 }
 
+function friction(grabbable, platform) {
+    if (grabbable.body.touching.down) {
+        grabbable.body.acceleration.x = -grabbable.body.velocity.x;
+    }
+}
+
 function update() {
   game.physics.arcade.collide(player, platforms);
 
   game.physics.arcade.collide(player, lava, touchlava, null, this);
   game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
-  game.physics.arcade.collide(grabbables, platforms);
+  game.physics.arcade.collide(grabbables, platforms, friction, null, this);
 
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 

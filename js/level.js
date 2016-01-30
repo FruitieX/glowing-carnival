@@ -109,6 +109,7 @@ function loadLevel(levelId) {
         var grabbable = grabbables.create(x * scale, y * scale, 'bouncy');
         //bouncy.body.immovable = true;
         grabbable.body.bounce.y = 0.5;
+        grabbable.body.maxVelocity.x = runSpeed * 1.3;
         grabbable.body.gravity.y = bouncyGravity;
         grabbable.scale.setTo(scale/64, scale/64);
       }
