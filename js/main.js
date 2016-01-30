@@ -86,10 +86,14 @@ function create() {
   startTimer();
 }
 
-function touchlava() {
+function reset() {
     player.kill();
     startTimer();
     spawnPlayer();
+}
+
+function touchlava() {
+    reset();
 }
 
 function passCheckpoint(player, checkpoint) {
@@ -99,10 +103,10 @@ function passCheckpoint(player, checkpoint) {
     }
 }
 
-function touchBouncy(pl, bouncy) {
+function touchGrabbable(player, grabbable) {
   var input = processInput();
   if (input.run) {
-    grab(bouncy);
+    grab(grabbable);
   }
 }
 
@@ -110,8 +114,8 @@ function update() {
   game.physics.arcade.collide(player, platforms);
 
   game.physics.arcade.collide(player, lava, touchlava, null, this);
-  game.physics.arcade.collide(player, bouncyTiles, touchBouncy, null, this);
-  game.physics.arcade.collide(bouncyTiles, platforms);
+  game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
+  game.physics.arcade.collide(grabbables, platforms);
 
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 

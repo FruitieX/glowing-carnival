@@ -14,8 +14,8 @@ function loadLevel(levelId) {
   checkpoints = game.add.group();
   checkpoints.enableBody = true;
   
-  bouncyTiles = game.add.group();
-  bouncyTiles.enableBody = true;
+  grabbables = game.add.group();
+  grabbables.enableBody = true;
 
   var scale = 32;
 
@@ -106,11 +106,11 @@ function loadLevel(levelId) {
         checkpoint.body.immovable = true;
         checkpoint.scale.setTo(scale/64, scale/64);
       } else if (mapArray[y][x] == 'B') {
-        var bouncy = bouncyTiles.create(x * scale, y * scale, 'bouncy');
+        var grabbable = grabbables.create(x * scale, y * scale, 'bouncy');
         //bouncy.body.immovable = true;
-        bouncy.body.bounce.y = 0.5;
-        bouncy.body.gravity.y = bouncyGravity;
-        bouncy.scale.setTo(scale/64, scale/64);
+        grabbable.body.bounce.y = 0.5;
+        grabbable.body.gravity.y = bouncyGravity;
+        grabbable.scale.setTo(scale/64, scale/64);
       }
     }
   }

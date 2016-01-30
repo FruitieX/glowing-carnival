@@ -3,6 +3,7 @@ function processInput() {
   var run = runButton.isDown;
   var left = cursors.left.isDown;
   var right = cursors.right.isDown;
+  var reset = resetButton.isDown;
 
   if (gamepadConnected) {
     jump |= buttonA.isDown;
@@ -15,7 +16,8 @@ function processInput() {
     jump: jump,
     run: run,
     left: left,
-    right: right
+    right: right,
+    reset: reset
   };
 }
 
@@ -81,6 +83,9 @@ function playerMovement() {
   }
   var input = processInput();
 
+  if (input.reset) {
+      reset();
+  }
   if (grabbing && !input.run) {
       grabbing.body.velocity.x = player.body.velocity.x * bouncyThrowMultiplier;
       grabbing = null;
