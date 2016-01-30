@@ -107,12 +107,11 @@ function update() {
   game.physics.arcade.collide(player, lava, touchlava, null, this);
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 
-    // run player input & movement code
-    playerMovement();
+  // run player input & movement code
+  playerMovement();
 
-    // player animations
-    updateAnimations();
-  }
+  // player animations
+  updateAnimations();
 }
 
 function render() {
