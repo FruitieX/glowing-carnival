@@ -11,7 +11,7 @@ function playerMovement() {
 
   if (cursors.left.isDown) {
     //  Move to the left
-    player.body.acceleration.x = -accel;
+    player.body.acceleration.x = runButton.isDown ? -runAccel : -accel;
 
     // turn instantly if we're on the ground
     if (player.body.touching.down) {
@@ -21,7 +21,7 @@ function playerMovement() {
     }
   } else if (cursors.right.isDown) {
     //  Move to the right
-    player.body.acceleration.x = accel;
+    player.body.acceleration.x = runButton.isDown ? runAccel : accel;
 
     // turn instantly if we're on the ground
     if (player.body.touching.down) {

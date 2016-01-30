@@ -1,9 +1,10 @@
 // "constants"
 var accel = 2000;
-var gravity = 800;
-var maxSpeed = 400;
-var runSpeed = 800;
-var jumpSpeed = 500;
+var runAccel = 3000;
+var gravity = 2000;
+var maxSpeed = 500;
+var runSpeed = 700;
+var jumpSpeed = 650;
 
 var stillDelta = 1; // 1 is pretty slow
 
