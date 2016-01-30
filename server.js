@@ -1,6 +1,7 @@
 static = require('node-static');
 
-var fileServer = new static.Server('./');
+// disable caching so we don't have to worry about that while developing
+var fileServer = new static.Server('./', { cache: false });
 var port = 8080;
 
 require('http').createServer(function (request, response) {
