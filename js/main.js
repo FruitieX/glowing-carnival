@@ -73,8 +73,6 @@ function create() {
 
   loadLevel(levelId);
 
-  game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   jumpButton.onDown.add(jump, this);
 
