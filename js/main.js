@@ -43,7 +43,7 @@ var playerSpawn = {
   y: 0
 };
 
-var level = 0;
+var levelId = 0;
 
 function create() {
   //game.world.setBounds(0, 0, 1920, 1920);
@@ -51,7 +51,7 @@ function create() {
   //  We're going to be using physics, so enable the Arcade Physics system
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
-  loadLevel(levels[level]);
+  loadLevel(levelId);
 
   game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
