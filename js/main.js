@@ -12,7 +12,8 @@ var stillDelta = 1; // 1 is pretty slow
 var game = new Phaser.Game('100', '100', Phaser.AUTO, '', {
   preload: preload,
   create: create,
-  update: update
+  update: update,
+  render: render
 });
 
 function preload() {
@@ -47,6 +48,8 @@ var playerSpawn = {
 
 var levelId = 0;
 
+var timer;
+
 function create() {
   //game.world.setBounds(0, 0, 1920, 1920);
 
@@ -62,6 +65,9 @@ function create() {
   cursors = game.input.keyboard.createCursorKeys();
   jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+  
+  //timer = startTimer(game);
+  startTimer();
 }
 
 function touchlava() {
@@ -81,6 +87,7 @@ function update() {
 }
 
 function render() {
-  game.debug.cameraInfo(game.camera, 32, 32);
-  game.debug.spriteCoords(player, 32, 500);
+  //game.debug.cameraInfo(game.camera, 32, 32);
+  //game.debug.spriteCoords(player, 32, 500);
+  renderTimer();
 }
