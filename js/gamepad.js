@@ -15,6 +15,7 @@ function addButtons() {
 
   //  We can't do this until we know that the gamepad has been connected and is started
   buttonA = gamepad.getButton(Phaser.Gamepad.XBOX360_A);
+  buttonA.onDown.add(jump, this);
   buttonB = gamepad.getButton(Phaser.Gamepad.XBOX360_B);
   buttonX = gamepad.getButton(Phaser.Gamepad.XBOX360_X);
   buttonY = gamepad.getButton(Phaser.Gamepad.XBOX360_Y);

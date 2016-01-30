@@ -1,22 +1,41 @@
 function processInput() {
   var run = runButton.isDown;
-  var jump = jumpButton.isDown || cursors.up.isDown;
   var left = cursors.left.isDown;
   var right = cursors.right.isDown;
 
   if (gamepadConnected) {
     run |= buttonX.isDown;
-    jump |= buttonA.isDown;
     left |= buttonDPadLeft.isDown;
     right |= buttonDPadRight.isDown;
   }
 
   return {
     run: run,
-    jump: jump,
     left: left,
     right: right
   };
+}
+
+function jump() {
+  var input = processInput();
+
+  //  Allow the player to jump if they are touching the ground.
+  if (player.body.touching.down) {
+    player.body.velocity.y = -jumpSpeed;
+  }
+
+  // walljumps TODO: only works if holding left/right :(
+  else if (player.body.touching.left) {
+    player.body.velocity.y = -jumpSpeed;
+    player.body.velocity.x = input.run ? runSpeed : maxSpeed;
+  } else if (player.body.touching.right) {
+    player.body.velocity.y = -jumpSpeed;
+    player.body.velocity.x = input.run ? -runSpeed : -maxSpeed;
+  }
+
+  if (!jumpButton.isDown) {
+    player.body.velocity.y = Math.max(0, player.body.velocity.y);
+  }
 }
 
 function playerMovement() {
@@ -60,24 +79,6 @@ function playerMovement() {
     //player.animations.stop();
 
     //player.frame = 4;
-  }
-
-  //  Allow the player to jump if they are touching the ground.
-  if (input.jump && player.body.touching.down) {
-    player.body.velocity.y = -jumpSpeed;
-  }
-
-  // walljumps TODO: only works if holding left/right :(
-  else if (input.jump && player.body.touching.left) {
-    player.body.velocity.y = -jumpSpeed;
-    player.body.velocity.x = input.run ? runSpeed : maxSpeed;
-  } else if (input.jump && player.body.touching.right) {
-    player.body.velocity.y = -jumpSpeed;
-    player.body.velocity.x = input.run ? -runSpeed : -maxSpeed;
-  }
-
-  if (!input.jump) {
-    player.body.velocity.y = Math.max(0, player.body.velocity.y);
   }
 
   // out of bounds check for player, acts as win condition
