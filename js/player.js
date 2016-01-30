@@ -27,8 +27,8 @@ function grab(box) {
     grabbing = box;
 }
 
-var wallClingTime = 2000;
-var wallClingMaxVelocity = 300;
+var wallClingTime = 200;
+var wallClingMaxVelocity = 30000; // disabled :>
 
 var leftPressedTime = 0;
 function onLeft() {
