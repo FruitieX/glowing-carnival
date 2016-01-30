@@ -27,7 +27,7 @@ game.state.add('Game', {
 game.state.start('MainMenu');
 
 function preload() {
-  game.load.image('bg0', 'assets/Background/bg_layer1.png');
+  game.load.image('bg0', 'assets/Background/sky.png');
   game.load.image('bg1', 'assets/Background/bg_layer4.png');
 
   game.load.image('lava', 'assets/Tiles/tile_15.png');
