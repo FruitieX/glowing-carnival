@@ -5,6 +5,7 @@ var gravity = 2000;
 var maxSpeed = 500;
 var runSpeed = 700;
 var jumpSpeed = 650;
+var maxYVelocity = 2000;
 
 var stillDelta = 1; // 1 is pretty slow
 

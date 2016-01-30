@@ -79,6 +79,7 @@ function spawnPlayer() {
   //  Player physics properties. Give the little guy a slight bounce.
   //player.body.bounce.y = 0.2;
   player.body.maxVelocity.x = maxSpeed;
+  player.body.maxVelocity.y = maxYVelocity;
   player.body.gravity.y = gravity;
 
   // We allow out of bounds as that is our current win condition
