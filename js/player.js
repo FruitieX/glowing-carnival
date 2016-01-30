@@ -95,6 +95,8 @@ function playerMovement() {
   }
   var input = processInput();
 
+  check_input(input);
+
   if (input.reset) {
       reset();
   }
@@ -242,4 +244,7 @@ function spawnPlayer() {
   player.animations.add('stand', [5], 10, true);
 
   game.camera.follow(player);
+  
+  clear_triggers();
+  set_trigger({"jump": true, "run": false, "left": false, "right": false, "reset": false}, 3, function() {console.log("Triple jump trigger")});
 }
