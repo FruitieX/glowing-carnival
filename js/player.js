@@ -1,9 +1,21 @@
 function processInput() {
+  var run = runButton.isDown;
+  var jump = jumpButton.isDown || cursors.up.isDown;
+  var left = cursors.left.isDown;
+  var right = cursors.right.isDown;
+
+  if (gamepadConnected) {
+    run |= buttonX.isDown;
+    jump |= buttonA.isDown;
+    left |= buttonDPadLeft.isDown;
+    right |= buttonDPadRight.isDown;
+  }
+
   return {
-    run: runButton.isDown,
-    jump: jumpButton.isDown || cursors.up.isDown,
-    left: cursors.left.isDown,
-    right: cursors.right.isDown
+    run: run,
+    jump: jump,
+    left: left,
+    right: right
   };
 }
 
