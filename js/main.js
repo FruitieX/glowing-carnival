@@ -95,7 +95,6 @@ function create() {
 
 function reset() {
     player.kill();
-    startTimer();
     spawnPlayer();
 }
 
