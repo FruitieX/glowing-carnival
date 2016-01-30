@@ -22,6 +22,7 @@ function menuCreate() {
   jumpButton.onDown.add(jump, this);
 
   runButton = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+  resetButton = game.input.keyboard.addKey(Phaser.Keyboard.R);
 
   cursors = game.input.keyboard.createCursorKeys();
   cursors.up.onDown.add(jump, this);
