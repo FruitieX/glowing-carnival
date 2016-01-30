@@ -80,18 +80,21 @@ function create() {
 
 function touchlava() {
     player.kill();
+    startTimer();
     spawnPlayer();
 }
 
 function update() {
-  game.physics.arcade.collide(player, platforms);
-  game.physics.arcade.collide(player, lava, touchlava, null, this);
+  if (player) {
+    game.physics.arcade.collide(player, platforms);
+    game.physics.arcade.collide(player, lava, touchlava, null, this);
 
-  // run player input & movement code
-  playerMovement();
+    // run player input & movement code
+    playerMovement();
 
-  // player animations
-  updateAnimations();
+    // player animations
+    updateAnimations();
+  }
 }
 
 function render() {
