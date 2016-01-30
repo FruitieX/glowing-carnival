@@ -4,10 +4,11 @@ var runAccel = 3000;
 var gravity = 2000;
 var bouncyGravity = 1000;
 var bouncyThrowMultiplier = 1.5;
-var maxSpeed = 500;
-var runSpeed = 700;
-var jumpSpeed = 650;
-var maxYVelocity = 2000;
+var fast = 100;
+var maxSpeed = 5 * fast;
+var runSpeed = 7 * fast;
+var jumpSpeed = 6.5 * fast;
+var maxYVelocity = 20 * fast;
 
 var stillDelta = 1; // 1 is pretty slow
 
@@ -129,8 +130,8 @@ function touchGravity(player, gravityBox) {
             player.body.gravity.y = gravity;
         }
         gravityTimer = game.time.create(false);
-        timer.add(1000, killtimer, this);
-        timer.start();
+        gravityTimer.add(1000, killtimer, this);
+        gravityTimer.start();
     }
 }
 
@@ -145,6 +146,27 @@ function retardateGrabbables() {
     }
 }
 
+var sanicTimer;
+
+var oldMax = maxSpeed;
+var oldRun = runSpeed;
+
+function goFast(player, sanic) {
+  if (!sanicTimer) {
+    maxSpeed = 1000 * fast;
+    runSpeed = 1000 * fast;
+  }
+  sanicTimer = game.time.create(false);
+  sanicTimer.add(3000, goSlow, this);
+  sanicTimer.start();
+}
+
+function goSlow() {
+  sanicTimer = null;
+  maxSpeed = oldMax;
+  runSpeed = oldRun;
+}
+
 function update() {
   game.physics.arcade.collide(player, platforms);
 
@@ -153,6 +175,7 @@ function update() {
   game.physics.arcade.collide(grabbables, platforms);
   game.physics.arcade.collide(grabbables, gravities);
   game.physics.arcade.collide(player, gravities, touchGravity, null, this);
+  game.physics.arcade.collide(player, sanics, goFast, null, this);
   game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
 
   // run player input & movement code

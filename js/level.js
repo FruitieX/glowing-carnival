@@ -19,7 +19,10 @@ function loadLevel(levelId) {
 
   gravities = game.add.group();
   gravities.enableBody = true;
-  
+
+  sanics = game.add.group();
+  sanics.enableBody = true;
+
   var scale = 32;
 
   // Indexing variables
@@ -118,6 +121,10 @@ function loadLevel(levelId) {
         var gravity = gravities.create(x * scale, y * scale, 'gravity');
         gravity.body.immovable = true;
         gravity.scale.setTo(scale/64, scale/64);
+      } else if (mapArray[y][x] == 'S') {
+        var sanic = sanics.create(x * scale, y * scale, 'sanic');
+        sanic.body.immovable = true;
+        sanic.scale.setTo(scale/64, scale/64);
       }
     }
   }
