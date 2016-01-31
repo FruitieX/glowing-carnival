@@ -84,7 +84,7 @@ function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
   // increase this if you get tunneling
-  game.physics.arcade.TILE_BIAS = 400;
+  game.physics.arcade.TILE_BIAS = 80;
 
   loadLevel(levelId);
 
