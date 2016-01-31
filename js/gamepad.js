@@ -21,6 +21,7 @@ function addButtons() {
   buttonX = gamepad.getButton(Phaser.Gamepad.XBOX360_X);
   buttonR2 = gamepad.getButton(Phaser.Gamepad.XBOX360_RIGHT_TRIGGER);
   buttonY = gamepad.getButton(Phaser.Gamepad.XBOX360_Y);
+  buttonR1 = gamepad.getButton(Phaser.Gamepad.XBOX360_RIGHT_BUMPER);
 
   // Proper displaying of the gamepad buttons in the menu
   whichA = 'A';
