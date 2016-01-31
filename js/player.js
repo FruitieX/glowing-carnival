@@ -221,7 +221,6 @@ function playerMovement() {
       player.body.position.y + player.body.height < game.world.bounds.y ||
       player.body.position.x > game.world.bounds.width ||
       player.body.position.y > game.world.bounds.height) {
-    console.log("levelId="+levelId);
     if (levelId++ == levels) {
       console.log('YOU\'RE WINNER!');
       levelId = 1;

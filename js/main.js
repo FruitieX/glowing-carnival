@@ -59,6 +59,7 @@ function preload() {
 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
   createLevel(1);
+  createLevel(2);
   game.load.image('tiles', 'assets/Tiles/tilemap.png');
 }
 
