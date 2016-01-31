@@ -77,7 +77,7 @@ var playerSpawn = {
   y: 0
 };
 
-var levelId = 5;
+var levelId = 1;
 
 var timer;
 
