@@ -12,7 +12,7 @@ var maxYVelocity = 20 * fast;
 
 var stillDelta = 1; // 1 is pretty slow
 
-var game = new Phaser.Game(1280, 600, Phaser.AUTO, '');
+var game = new Phaser.Game(1920, 1080, Phaser.AUTO, '');
 
 var levels = 0; // count levels
 game.state.add('MainMenu', {
