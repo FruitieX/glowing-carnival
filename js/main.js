@@ -14,6 +14,7 @@ var stillDelta = 1; // 1 is pretty slow
 
 var game = new Phaser.Game(1280, 600, Phaser.AUTO, '');
 
+var levels = 0; // count levels
 game.state.add('MainMenu', {
   preload: menuPreload,
   create: menuCreate,
@@ -57,8 +58,13 @@ function preload() {
   game.load.image('ground1_ltrb', 'assets/Tiles/tile_196.png');
 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
-  game.load.tilemap('level1', 'levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
+  createLevel(1);
   game.load.image('tiles', 'assets/Tiles/tilemap.png');
+}
+
+function createLevel(id) {
+  game.load.tilemap('level' + id, 'levels/level' + id + '.json', null, Phaser.Tilemap.TILED_JSON);
+  levels++;
 }
 
 var playerSpawn = {
