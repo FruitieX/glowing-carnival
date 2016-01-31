@@ -189,7 +189,7 @@ function update() {
   //game.physics.arcade.collide(grabbables, gravities);
   //game.physics.arcade.collide(player, gravities, touchGravity, null, this);
   //game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
-  //game.physics.arcade.overlap(player, checkpoints, null, passCheckpoint, this);
+  game.physics.arcade.overlap(player, cpGroup, null, passCheckpoint, this);
   //game.physics.arcade.collide(player, sanics, goFast, null, this);
 
   // run player input & movement code

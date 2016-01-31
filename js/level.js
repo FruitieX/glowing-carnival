@@ -1,5 +1,8 @@
 var scale = 32;
 
+var lavaTile = 73;
+var cpTile = 131;
+
 function loadLevel(levelId) {
   game.world.removeAll();
 
@@ -17,8 +20,12 @@ function loadLevel(levelId) {
 
   groundLayer.resizeWorld();
 
-  map.setCollisionBetween(0, 70);
-  map.setCollisionBetween(74, 523);
+  // collisions vs all the tiles
+  map.setCollisionBetween(0, 523);
+
+  // ... except these
+  map.setCollision(lavaTile, false);
+  map.setCollision(cpTile, false);
 
   var spawn = game.add.group();
   map.createFromObjects('spawn', 'spawn', '', 0, false, false, spawn);
@@ -32,13 +39,21 @@ function loadLevel(levelId) {
 
   lavaGroup = game.add.group();
   lavaGroup.enableBody = true;
-  map.createFromTiles(73, null, '', 'ground', lavaGroup);
+  map.createFromTiles(lavaTile, null, '', 'ground', lavaGroup);
 
   lavaGroup.forEach(function(tile) {
     tile.body.immovable = true;
     tile.renderable = false;
   });
 
+  cpGroup = game.add.group();
+  cpGroup.enableBody = true;
+  map.createFromTiles(cpTile, null, '', 'ground', cpGroup);
+
+  cpGroup.forEach(function(tile) {
+    tile.body.immovable = true;
+    tile.renderable = false;
+  });
   /*
   platforms = game.add.group();
   platforms.enableBody = true;
