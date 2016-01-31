@@ -10,11 +10,14 @@ var runSpeed = 7 * fast;
 var jumpSpeed = 6.5 * fast;
 var maxYVelocity = 20 * fast;
 
+var createdLevels = 7;
+
 var stillDelta = 1; // 1 is pretty slow
+
+var levels = 0;
 
 var game = new Phaser.Game(1920, 1080, Phaser.AUTO, '');
 
-var levels = 0; // count levels
 game.state.add('MainMenu', {
   preload: menuPreload,
   create: menuCreate,
@@ -37,7 +40,7 @@ function preload() {
 
   game.load.image('lava', 'assets/Obstacles/spikes_a.png');
   game.load.image('checkpoint', 'assets/Tiles/tile_214.png');
-  game.load.image('bouncy', 'assets/Tiles/tile_03.png');
+  game.load.image('grabbable', 'assets/Tiles/tile_03.png');
   game.load.image('gravity', 'assets/Tiles/tile_341.png');
 
   game.load.image('ground1_tb', 'assets/Tiles/tile_111.png');
@@ -58,8 +61,10 @@ function preload() {
   game.load.image('ground1_ltrb', 'assets/Tiles/tile_196.png');
 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
-  createLevel(1);
-  createLevel(2);
+  for(var i = 1; i <= createdLevels; ++i) {
+      console.log(i);
+    createLevel(i);
+  }
   game.load.image('tiles', 'assets/Tiles/tilemap.png');
 }
 
@@ -125,6 +130,7 @@ function passCheckpoint(player, checkpoint) {
 var grabbable = [];
 
 function touchGrabbable(player, grabbable) {
+    console.log("touching");
   var input = processInput();
   if (input.run) {
     grab(grabbable);
@@ -185,9 +191,9 @@ function update() {
   //game.physics.arcade.collide(player, platforms);
 
   game.physics.arcade.collide(player, lavaGroup, touchlava, null, this);
-  //game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
-  //game.physics.arcade.collide(grabbables, platforms);
-  //game.physics.arcade.collide(grabbables, gravities);
+  game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
+  game.physics.arcade.collide(grabbables, groundLayer);
+  game.physics.arcade.collide(grabbables, gvGroup);
   game.physics.arcade.collide(player, gvGroup, touchGravity, null, this);
   //game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
   game.physics.arcade.overlap(player, cpGroup, null, passCheckpoint, this);

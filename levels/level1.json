@@ -41,7 +41,7 @@
         {
          "draworder":"topdown",
          "height":24,
-         "name":"grabbable",
+         "name":"grabbables",
          "objects":[
                 {
                  "height":64,
@@ -57,6 +57,21 @@
                  "width":64,
                  "x":512,
                  "y":1216
+                }, 
+                {
+                 "height":64,
+                 "id":23,
+                 "name":"grabbable",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":630.909090909091,
+                 "y":1203.87878787879
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -65,7 +80,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":8,
+ "nextobjectid":24,
  "orientation":"orthogonal",
  "properties":
     {

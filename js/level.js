@@ -38,6 +38,25 @@ function loadLevel(levelId) {
       y: spawnPoint.y + spawnPoint.height / 2
     }
   });
+  
+    var temp = game.add.group();
+    temp.enableBody = true;
+    map.createFromObjects('grabbables', 'grabbable', '', 0, false, false, temp);
+    console.log(temp.length);
+    
+    grabbables = game.add.group();
+    grabbables.enableBody = true;
+    
+    temp.forEach(function(grabbable) {
+        console.log("doing");
+        var g = game.add.sprite(grabbable.x + grabbable.width, grabbable.y + grabbable.height, 'grabbable');
+        game.physics.arcade.enable(g);
+        //g.body.immovable = true;
+        //g.scale.setTo(scale/64, scale/64);
+        g.body.gravity.y = bouncyGravity;
+        g.body.bounce.y = 0.5;
+        grabbables.add(g);
+    })
 
   lavaGroup = game.add.group();
   lavaGroup.enableBody = true;
@@ -62,7 +81,6 @@ function loadLevel(levelId) {
   map.createFromTiles(gvTile, null, '', 'ground', gvGroup);
 
   gvGroup.forEach(function(tile) {
-      console.log("here");
     tile.body.immovable = true;
     tile.renderable = false;
   })
