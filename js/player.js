@@ -12,6 +12,7 @@ function processInput() {
     run |= buttonX.isDown || buttonR2.isDown;
     left |= buttonDPadLeft.isDown;
     right |= buttonDPadRight.isDown;
+    reset |= buttonR1.isDown;
     esc |= buttonB.isDown;
     X |= buttonX.isDown;
   }
