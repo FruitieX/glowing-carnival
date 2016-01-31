@@ -37,7 +37,7 @@ function preload() {
 
   game.load.image('lava', 'assets/Obstacles/spikes_a.png');
   game.load.image('checkpoint', 'assets/Tiles/tile_214.png');
-  game.load.image('bouncy', 'assets/Tiles/tile_03.png');
+  game.load.image('grabbable', 'assets/Tiles/tile_03.png');
   game.load.image('gravity', 'assets/Tiles/tile_341.png');
 
   game.load.image('ground1_tb', 'assets/Tiles/tile_111.png');
@@ -125,6 +125,7 @@ function passCheckpoint(player, checkpoint) {
 var grabbable = [];
 
 function touchGrabbable(player, grabbable) {
+    console.log("touching");
   var input = processInput();
   if (input.run) {
     grab(grabbable);
@@ -185,9 +186,9 @@ function update() {
   //game.physics.arcade.collide(player, platforms);
 
   game.physics.arcade.collide(player, lavaGroup, touchlava, null, this);
-  //game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
-  //game.physics.arcade.collide(grabbables, platforms);
-  //game.physics.arcade.collide(grabbables, gravities);
+  game.physics.arcade.collide(player, grabbables, touchGrabbable, null, this);
+  game.physics.arcade.collide(grabbables, groundLayer);
+  game.physics.arcade.collide(grabbables, gvGroup);
   game.physics.arcade.collide(player, gvGroup, touchGravity, null, this);
   //game.physics.arcade.overlap(player, checkpoints, passCheckpoint, null, this);
   game.physics.arcade.overlap(player, cpGroup, null, passCheckpoint, this);
