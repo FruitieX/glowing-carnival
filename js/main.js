@@ -10,11 +10,14 @@ var runSpeed = 7 * fast;
 var jumpSpeed = 6.5 * fast;
 var maxYVelocity = 20 * fast;
 
+var createdLevels = 7;
+
 var stillDelta = 1; // 1 is pretty slow
+
+var levels = 0;
 
 var game = new Phaser.Game(1920, 1080, Phaser.AUTO, '');
 
-var levels = 0; // count levels
 game.state.add('MainMenu', {
   preload: menuPreload,
   create: menuCreate,
@@ -58,8 +61,10 @@ function preload() {
   game.load.image('ground1_ltrb', 'assets/Tiles/tile_196.png');
 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
-  createLevel(1);
-  createLevel(2);
+  for(var i = 1; i <= createdLevels; ++i) {
+      console.log(i);
+    createLevel(i);
+  }
   game.load.image('tiles', 'assets/Tiles/tilemap.png');
 }
 
