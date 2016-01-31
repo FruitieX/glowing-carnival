@@ -65,6 +65,9 @@ function preload() {
       console.log(i);
     createLevel(i);
   }
+  createLevel(1);
+  createLevel(2);
+  createLevel(5);
   game.load.image('tiles', 'assets/Tiles/tilemap.png');
 }
 
@@ -78,7 +81,7 @@ var playerSpawn = {
   y: 0
 };
 
-var levelId = 1;
+var levelId = 5;
 
 var timer;
 
