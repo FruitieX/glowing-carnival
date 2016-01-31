@@ -2,6 +2,7 @@ var scale = 32;
 
 var lavaTile = 73;
 var cpTile = 131;
+var gvTile = 244;
 
 function loadLevel(levelId) {
   game.world.removeAll();
@@ -26,6 +27,7 @@ function loadLevel(levelId) {
   // ... except these
   map.setCollision(lavaTile, false);
   map.setCollision(cpTile, false);
+  map.setCollision(gvTile, false);
 
   var spawn = game.add.group();
   map.createFromObjects('spawn', 'spawn', '', 0, false, false, spawn);
@@ -54,6 +56,16 @@ function loadLevel(levelId) {
     tile.body.immovable = true;
     tile.renderable = false;
   });
+  
+  gvGroup = game.add.group();
+  gvGroup.enableBody = true;
+  map.createFromTiles(gvTile, null, '', 'ground', gvGroup);
+
+  gvGroup.forEach(function(tile) {
+      console.log("here");
+    tile.body.immovable = true;
+    tile.renderable = false;
+  })
   /*
   platforms = game.add.group();
   platforms.enableBody = true;
