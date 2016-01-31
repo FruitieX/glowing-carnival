@@ -37,6 +37,7 @@ function loadLevel(levelId) {
   lavaGroup.forEach(function(tile) {
     console.log('lava tile added');
     tile.body.immovable = true;
+    tile.renderable = false;
   });
 
   /*
