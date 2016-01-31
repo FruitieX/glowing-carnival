@@ -57,7 +57,7 @@ function preload() {
   game.load.image('ground1_ltrb', 'assets/Tiles/tile_196.png');
 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
-  game.load.tilemap('map', 'levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
+  game.load.tilemap('level1', 'levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('tiles', 'assets/Tiles/tilemap.png');
 }
 

@@ -7,7 +7,7 @@ function loadLevel(levelId) {
   background = game.add.sprite(0, 0, 'bg0');
   //game.add.sprite(0, 0, 'bg1');
 
-  map = game.add.tilemap('map');
+  map = game.add.tilemap('level' + levelId);
 
   // what we call the tileset in Tiled vs in preload()
   map.addTilesetImage('tileset', 'tiles');
