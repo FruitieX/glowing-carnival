@@ -31,12 +31,12 @@ function loadLevel(levelId) {
   });
 
   lavaGroup = game.add.group();
-  map.createFromTiles(72, null, '', 0, lavaGroup);
+  lavaGroup.enableBody = true;
+  map.createFromTiles(73, null, '', 'ground', lavaGroup);
 
   lavaGroup.forEach(function(tile) {
-      var temp = lava.create(tile.x, tile.y, 'lavaGroup');
-      lavaTile.body.immovable = true;
-      //lavaTile.scale.setTo(scale/64, scale/64);
+    console.log('lava tile added');
+    tile.body.immovable = true;
   });
 
   /*
