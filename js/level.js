@@ -34,8 +34,8 @@ function loadLevel(levelId) {
 
   spawn.forEach(function(spawnPoint) {
     playerSpawn = {
-      x: spawnPoint.x,
-      y: spawnPoint.y
+      x: spawnPoint.x + spawnPoint.width  / 2,
+      y: spawnPoint.y + spawnPoint.height / 2
     }
   });
 
