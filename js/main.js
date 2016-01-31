@@ -1,13 +1,13 @@
 // "constants"
 var accel = 2000;
-var runAccel = 3000;
+var runAccel = 3500;
 var gravity = 2000;
 var bouncyGravity = 1000;
 var bouncyThrowMultiplier = 1.5;
 var fast = 100;
-var maxSpeed = 5 * fast;
-var runSpeed = 7 * fast;
-var jumpSpeed = 6.5 * fast;
+var maxSpeed = 6 * fast;
+var runSpeed = 10 * fast;
+var jumpSpeed = 8 * fast;
 var maxYVelocity = 20 * fast;
 
 var createdLevels = 7;
@@ -62,12 +62,8 @@ function preload() {
 
   game.load.spritesheet('player', 'assets/Players/bunny1.png', 150, 200);
   for(var i = 1; i <= createdLevels; ++i) {
-      console.log(i);
     createLevel(i);
   }
-  createLevel(1);
-  createLevel(2);
-  createLevel(5);
   game.load.image('tiles', 'assets/Tiles/tilemap.png');
 }
 
